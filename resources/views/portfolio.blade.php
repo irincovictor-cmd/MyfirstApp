@@ -23,12 +23,12 @@
     <!-- Navigation -->
     <header>
         <nav>
-            <div class="nav-mark">Victor James Irinco.</div>
+            <div class="nav-mark"><a href="{{ route('home') }}" style="text-decoration:none; color:inherit;">Victor James Irinco.</a></div>
             <ul class="nav-links">
                 <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('home') }}#work">Work</a></li>
-                <li><a href="{{ route('home') }}#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="{{ route('work') }}">Work</a></li>
+                <li><a href="{{ route('about') }}">About</a></li>
+                <li><a href="{{ route('contact') }}">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -42,8 +42,8 @@
                 <h1>Hi, I'm<br><span class="highlight">Victor James</span></h1>
                 <p class="tagline">I design brand systems, digital products, and the odd bit of chaos in between. Based somewhere, working everywhere.</p>
                 <div class="cta-row">
-                    <a href="#work" class="btn btn-primary">See the work</a>
-                    <a href="#contact" class="btn btn-ghost">Get in touch</a>
+                    <a href="{{ route('work') }}" class="btn btn-primary">See the work</a>
+                    <a href="{{ route('contact') }}" class="btn btn-ghost">Get in touch</a>
                 </div>
             </div>
 
@@ -55,7 +55,6 @@
                 </div>
             </div>
         </section>
-        @endif
 
         <!-- Marquee Banner -->
         <div class="marquee-wrap">
@@ -72,7 +71,9 @@
                 <span>Typography</span><span class="dot">•</span>
             </div>
         </div>
+        @endif
 
+        @if (($section ?? '') == 'work')
         <!-- Work Grid Section -->
         <section class="work" id="work">
             <div class="section-head">
@@ -102,9 +103,10 @@
                 </a>
             </div>
         </section>
+        @endif
 
+        @if (($section ?? '') == 'about')
         <!-- About Section -->
-       <!-- About Section -->
         <section class="about-section" id="about">
             <div class="section-head">
                 <h2>About Me</h2>
@@ -145,6 +147,22 @@
                 </div>
             </div>
         </section>
+        @endif
+
+        @if (($section ?? '') == 'contact')
+        <!-- Dedicated Contact Section -->
+        <section class="contact-section" style="max-width: 1180px; margin: 0 auto; padding: 6rem 1.5rem;">
+            <div class="section-head">
+                <h2>Get In Touch</h2>
+                <p>Feel free to reach out for collaborations, project inquiries, or just a friendly chat.</p>
+            </div>
+            <div style="background: var(--violet-soft); border: 1px solid var(--line); border-radius: 16px; padding: 2.5rem; margin-top: 2rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--paper);">Direct Email</h3>
+                <p style="color: var(--paper-dim); margin-bottom: 1.5rem;">Irinco.victor@cec.edu.ph</p>
+                <a href="mailto:Irinco.victor@cec.edu.ph" class="btn btn-primary">Send Email</a>
+            </div>
+        </section>
+        @endif
     </main>
 
     <!-- Footer / Contact -->
