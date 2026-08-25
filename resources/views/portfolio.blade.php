@@ -81,25 +81,25 @@
                 <p>Projects I've built and continue to improve as a BSIT student.</p>
             </div>
             <div class="grid">
-                <a href="https://github.com/irincovictor-cmd/MyfirstApp" target="_blank" rel="noopener" class="card c1">
+                <a href="https://github.com/irincovictor-cmd/Finished__Final_webSystem__-2nd-yr-" target="_blank" rel="noopener" class="card c1">
                     <span class="num">01</span>
-                    <h3>MyfirstApp</h3>
-                    <p>Laravel web app with portfolio, student form, and a working calculator (add, subtract, multiply, divide).</p>
+                    <h3>Final Web System</h3>
+                    <p>Complete web system built for Web Development 1 (2nd year). Full PHP-based application developed as a team project.</p>
                 </a>
-                <a href="{{ route('operator.index') }}" class="card c2">
+                <a href="https://github.com/irincovictor-cmd/whop-toolkit-web" target="_blank" rel="noopener" class="card c2">
                     <span class="num">02</span>
-                    <h3>Simple Calculator</h3>
-                    <p>Interactive calculator built with Laravel routing, controllers, and Blade views.</p>
+                    <h3>Whop Toolkit (Web)</h3>
+                    <p>Web-based toolkit built with TypeScript — tools and utilities for Whop clippers.</p>
                 </a>
-                <a href="{{ route('student.index') }}" class="card c3">
+                <a href="https://github.com/irincovictor-cmd/Finals_DSAvisualizer" target="_blank" rel="noopener" class="card c3">
                     <span class="num">03</span>
-                    <h3>Student Form</h3>
-                    <p>Basic student information form using Laravel controllers and Blade templating.</p>
+                    <h3>DSA Visualizer</h3>
+                    <p>Data Structures & Algorithms visualizer (Java) — final project for the DSA course.</p>
                 </a>
-                <a href="https://github.com/irincovictor-cmd" target="_blank" rel="noopener" class="card c4">
+                <a href="https://github.com/irincovictor-cmd/MyfirstApp" target="_blank" rel="noopener" class="card c4">
                     <span class="num">04</span>
-                    <h3>GitHub Profile</h3>
-                    <p>More projects and code on my GitHub — irincovictor-cmd.</p>
+                    <h3>MyfirstApp (Laravel)</h3>
+                    <p>Laravel portfolio site with student form and interactive calculator. My first Laravel project.</p>
                 </a>
             </div>
         </section>
