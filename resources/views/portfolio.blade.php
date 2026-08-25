@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Victor James Irinco — Portfolio</title>
+    <title>Victor James M. Irinco — Portfolio</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
     <!-- Navigation -->
     <header>
         <nav>
-            <div class="nav-mark"><a href="{{ route('home') }}" style="text-decoration:none; color:inherit;">Victor James Irinco.</a></div>
+            <div class="nav-mark"><a href="{{ route('home') }}" style="text-decoration:none; color:inherit;">Victor James M. Irinco.</a></div>
             <ul class="nav-links">
                 <li><a href="{{ route('home') }}">Home</a></li>
                 <li><a href="{{ route('work') }}">Work</a></li>
@@ -38,9 +38,9 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-copy">
-                <span class="eyebrow">Design & Art Direction</span>
+                <span class="eyebrow">BSIT Student · Web Developer</span>
                 <h1>Hi, I'm<br><span class="highlight">Victor James</span></h1>
-                <p class="tagline">I design brand systems, digital products, and the odd bit of chaos in between. Based somewhere, working everywhere.</p>
+                <p class="tagline">3rd-year BSIT student at Cristal e-College, building web applications with Laravel, PHP, and modern front-end tools. Based in Tawala, Panglao, Bohol.</p>
                 <div class="cta-row">
                     <a href="{{ route('work') }}" class="btn btn-primary">See the work</a>
                     <a href="{{ route('contact') }}" class="btn btn-ghost">Get in touch</a>
@@ -50,7 +50,7 @@
             <div class="hero-photo">
                 <div class="photo-ring"></div>
                 <div class="photo-frame">
-                    <img src="{{ asset('images/picture.jpg') }}" alt="Portrait of Victor James" onerror="this.removeAttribute('src')">
+                    <img src="{{ asset('images/picture.jpg') }}" alt="Portrait of Victor James M. Irinco" onerror="this.removeAttribute('src')">
                     <div class="photo-placeholder">Your photo<br>goes here</div>
                 </div>
             </div>
@@ -59,16 +59,16 @@
         <!-- Marquee Banner -->
         <div class="marquee-wrap">
             <div class="marquee">
-                <span>Brand Identity</span><span class="dot">•</span>
-                <span>Art Direction</span><span class="dot">•</span>
-                <span>Product Design</span><span class="dot">•</span>
-                <span>Motion</span><span class="dot">•</span>
-                <span>Typography</span><span class="dot">•</span>
-                <span>Brand Identity</span><span class="dot">•</span>
-                <span>Art Direction</span><span class="dot">•</span>
-                <span>Product Design</span><span class="dot">•</span>
-                <span>Motion</span><span class="dot">•</span>
-                <span>Typography</span><span class="dot">•</span>
+                <span>Laravel</span><span class="dot">•</span>
+                <span>PHP</span><span class="dot">•</span>
+                <span>HTML / CSS</span><span class="dot">•</span>
+                <span>JavaScript</span><span class="dot">•</span>
+                <span>Web Development</span><span class="dot">•</span>
+                <span>Laravel</span><span class="dot">•</span>
+                <span>PHP</span><span class="dot">•</span>
+                <span>HTML / CSS</span><span class="dot">•</span>
+                <span>JavaScript</span><span class="dot">•</span>
+                <span>Web Development</span><span class="dot">•</span>
             </div>
         </div>
         @endif
@@ -78,28 +78,28 @@
         <section class="work" id="work">
             <div class="section-head">
                 <h2>Selected work</h2>
-                <p>A handful of recent projects — swap these in for your real case studies.</p>
+                <p>Projects I've built and continue to improve as a BSIT student.</p>
             </div>
             <div class="grid">
-                <a href="#" class="card c1">
+                <a href="https://github.com/irincovictor-cmd/MyfirstApp" target="_blank" rel="noopener" class="card c1">
                     <span class="num">01</span>
-                    <h3>Project One</h3>
-                    <p>Brand identity for a fictional client</p>
+                    <h3>MyfirstApp</h3>
+                    <p>Laravel web app with portfolio, student form, and a working calculator (add, subtract, multiply, divide).</p>
                 </a>
-                <a href="#" class="card c2">
+                <a href="{{ route('operator.index') }}" class="card c2">
                     <span class="num">02</span>
-                    <h3>Project Two</h3>
-                    <p>Digital product design</p>
+                    <h3>Simple Calculator</h3>
+                    <p>Interactive calculator built with Laravel routing, controllers, and Blade views.</p>
                 </a>
-                <a href="#" class="card c3">
+                <a href="{{ route('student.index') }}" class="card c3">
                     <span class="num">03</span>
-                    <h3>Project Three</h3>
-                    <p>Motion & visual identity</p>
+                    <h3>Student Form</h3>
+                    <p>Basic student information form using Laravel controllers and Blade templating.</p>
                 </a>
-                <a href="#" class="card c4">
+                <a href="https://github.com/irincovictor-cmd" target="_blank" rel="noopener" class="card c4">
                     <span class="num">04</span>
-                    <h3>Project Four</h3>
-                    <p>Editorial art direction</p>
+                    <h3>GitHub Profile</h3>
+                    <p>More projects and code on my GitHub — irincovictor-cmd.</p>
                 </a>
             </div>
         </section>
@@ -110,26 +110,26 @@
         <section class="about-section" id="about">
             <div class="section-head">
                 <h2>About Me</h2>
-                <p>A brief look into my background, skills, and design philosophy.</p>
+                <p>A short introduction to who I am and what I'm studying.</p>
             </div>
 
             <div class="about-grid">
                 <div class="about-bio">
                     <p class="lead">
-                        I’m Victor James Irinco, a multidisciplinary designer and web developer dedicated to building engaging, functional, and visually striking digital experiences.
+                        I’m Victor James M. Irinco, a 3rd-year BSIT student at Cristal e-College in Tawala, Panglao, Bohol.
                     </p>
                     <p>
-                        My work lies at the intersection of clean modern layouts, brand identity, and front-end development. Whether it’s crafting custom design systems or developing interactive web applications, I focus on detail, usability, and creativity.
+                        I’m learning web development with a focus on Laravel, PHP, HTML, CSS, and JavaScript. I enjoy building practical applications — from simple forms and calculators to full portfolio sites — and continuously improving my skills through real projects.
                     </p>
 
                     <div class="about-stats">
                         <div class="stat-card">
-                            <span class="stat-number">03+</span>
-                            <span class="stat-label">Years Experience</span>
+                            <span class="stat-number">BSIT</span>
+                            <span class="stat-label">3rd Year Student</span>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-number">15+</span>
-                            <span class="stat-label">Completed Projects</span>
+                            <span class="stat-number">CEC</span>
+                            <span class="stat-label">Cristal e-College</span>
                         </div>
                     </div>
                 </div>
@@ -137,12 +137,12 @@
                 <div class="about-skills">
                     <h3>Core Skills & Tools</h3>
                     <ul class="skills-list">
-                        <li><span>UI/UX & Web Design</span></li>
-                        <li><span>Brand Identity</span></li>
-                        <li><span>HTML5 / CSS3 / JavaScript</span></li>
                         <li><span>Laravel & PHP</span></li>
-                        <li><span>Responsive Development</span></li>
-                        <li><span>Figma & Adobe Suite</span></li>
+                        <li><span>HTML5 / CSS3</span></li>
+                        <li><span>JavaScript</span></li>
+                        <li><span>Blade Templating</span></li>
+                        <li><span>Git & GitHub</span></li>
+                        <li><span>Responsive Web Design</span></li>
                     </ul>
                 </div>
             </div>
@@ -170,11 +170,13 @@
         <div>
             <h2>Let's work together.</h2>
             <p>Irinco.victor@cec.edu.ph</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Tawala, Panglao, Bohol</p>
         </div>
         <div class="socials">
             <a href="https://www.instagram.com/irincovictorjames?igsh=MTNqaHV3ZXE2c28xcQ==" target="_blank" rel="noopener">Instagram</a>
             <a href="https://www.facebook.com/share/1HpXzsaixM/" target="_blank" rel="noopener">Facebook</a>
             <a href="https://www.linkedin.com/in/victorjames-irinco-84696936b/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/irincovictor-cmd" target="_blank" rel="noopener">GitHub</a>
         </div>
     </footer>
 
