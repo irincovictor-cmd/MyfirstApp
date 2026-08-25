@@ -6,13 +6,21 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('student');
     }
-    public function show(Request $request){
-        $name = $request->name;
-        $course = $request->course;
-        return view('student', ['name' => $name, 'course' => $course]);
-    }
 
+    public function show(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'course' => 'required|string|max:100',
+        ]);
+
+        return view('student', [
+            'name' => $request->input('name'),
+            'course' => $request->input('course'),
+        ]);
+    }
 }
