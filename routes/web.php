@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\OperatorController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,3 +29,11 @@ Route::get('/contact', function () {
 
 Route::get('student',[StudentController::class,'index']);
 Route::post('student',[StudentController::class, 'show']);
+
+Route::get('/operator',[OperatorController::class, 'index'])->name('operator.index');
+
+Route::get('/operator/{type}', [OperatorController::class, 'showForm'])->name('operator.show');
+
+Route::post('/operator/{type}', [OperatorController::class, 'calculate'])->name('operator.calculate');
+
+
