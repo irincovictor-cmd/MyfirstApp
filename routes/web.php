@@ -31,7 +31,11 @@ Route::get('/contact', function () {
     return view('portfolio', ['section' => 'contact']);
 })->name('contact');
 
+// ------------------------------------------------------------
 // Student form
+// GET  /student  → show the form
+// POST /student  → handle submit and show result
+// ------------------------------------------------------------
 Route::get('/student', [StudentController::class, 'index'])->name('student.index');
 Route::post('/student', [StudentController::class, 'show'])->name('student.show');
 
