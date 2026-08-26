@@ -10,10 +10,11 @@
             font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             background: #f4f6f8;
             color: #333;
+            padding: 2rem 1rem;
         }
         .container {
             background: #fff;
@@ -21,12 +22,16 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 480px;
         }
         h1 {
             font-size: 1.4rem;
             margin-bottom: 1.25rem;
             text-align: center;
+        }
+        h2 {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
         }
         .form-group { margin-bottom: 1rem; }
         label {
@@ -76,6 +81,29 @@
             color: #0f5132;
         }
         .result p { margin: 0.3rem 0; }
+        .students-list {
+            margin-top: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .students-list table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .students-list th,
+        .students-list td {
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .students-list th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        .students-list tr:last-child td { border-bottom: none; }
+        .empty { color: #666; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -91,41 +119,68 @@
             </div>
         @endif
 
-        {{-- Simple form: posts to named route student.show --}}
+        {{-- Form posts to named route student.show; fields match students table --}}
         <form action="{{ route('student.show') }}" method="POST">
             @csrf
 
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name"
-                       value="{{ old('name', $name ?? '') }}" required>
+                       value="{{ old('name') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="course">Course</label>
                 <input type="text" id="course" name="course"
-                       value="{{ old('course', $course ?? '') }}" required>
+                       value="{{ old('course') }}" required>
             </div>
 
             <div class="form-group">
-                <label for="year">Year (optional)</label>
-                <input type="text" id="year" name="year"
-                       value="{{ old('year', $year ?? '') }}"
-                       placeholder="e.g. 3rd year">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="1" max="120"
+                       value="{{ old('age') }}" required>
             </div>
 
-            <button type="submit">Submit</button>
+            <button type="submit">Save Student</button>
         </form>
 
-        {{-- Show submitted data after successful POST --}}
-        @if(isset($name))
+        {{-- Success message after saving to DB --}}
+        @if(!empty($success))
             <div class="result">
+                <p><strong>Saved successfully!</strong></p>
                 <p><strong>Name:</strong> {{ $name }}</p>
                 <p><strong>Course:</strong> {{ $course }}</p>
-                @if(!empty($year))
-                    <p><strong>Year:</strong> {{ $year }}</p>
-                @endif
+                <p><strong>Age:</strong> {{ $age }}</p>
             </div>
+        @endif
+
+        {{-- List of all students from the database --}}
+        <h2>Saved Students</h2>
+        @if(isset($students) && $students->count() > 0)
+            <div class="students-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Age</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($students as $s)
+                            <tr>
+                                <td>{{ $s->id }}</td>
+                                <td>{{ $s->name }}</td>
+                                <td>{{ $s->course }}</td>
+                                <td>{{ $s->age }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <p class="empty">No students saved yet.</p>
         @endif
     </div>
 </body>

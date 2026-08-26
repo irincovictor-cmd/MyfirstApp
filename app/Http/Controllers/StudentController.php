@@ -2,36 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
     /**
-     * Show the student form (GET /student)
+     * Show the student form and list of saved students (GET /student)
      */
     public function index()
     {
-        return view('student');
+        $students = Student::latest()->get();
+
+        return view('student', compact('students'));
     }
 
     /**
      * Handle form submit (POST /student)
-     * Validates input, then shows the same page with the submitted data.
+     * Validates input, saves to students table, then shows the form with success + list.
      */
     public function show(Request $request)
     {
-        // Validate the form fields
         $validated = $request->validate([
             'name'   => 'required|string|max:100',
             'course' => 'required|string|max:100',
-            'year'   => 'nullable|string|max:50',
+            'age'    => 'required|integer|min:1|max:120',
         ]);
 
-        // Pass the data back to the view so it can be displayed
+        // Save to the students table (from create_students_table migration)
+        $student = Student::create($validated);
+
+        $students = Student::latest()->get();
+
         return view('student', [
-            'name'   => $validated['name'],
-            'course' => $validated['course'],
-            'year'   => $validated['year'] ?? null,
+            'name'     => $student->name,
+            'course'   => $student->course,
+            'age'      => $student->age,
+            'students' => $students,
+            'success'  => true,
         ]);
     }
 }
