@@ -32,12 +32,16 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // ------------------------------------------------------------
-// Student form
-// GET  /student  → show the form
-// POST /student  → handle submit and show result
+// Student form (old)
 // ------------------------------------------------------------
 Route::get('/student', [StudentController::class, 'index'])->name('student.index');
 Route::post('/student', [StudentController::class, 'show'])->name('student.show');
+
+// ------------------------------------------------------------
+// Student Details (new clean page)
+// ------------------------------------------------------------
+Route::get('/student-details', [StudentController::class, 'details'])->name('studentDetails.index');
+Route::post('/student-details', [StudentController::class, 'storeDetails'])->name('studentDetails.store');
 
 // Calculator (Operator)
 Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
