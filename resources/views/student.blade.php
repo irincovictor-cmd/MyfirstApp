@@ -22,7 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 480px;
+            max-width: 560px;
         }
         h1 {
             font-size: 1.4rem;
@@ -40,16 +40,21 @@
             font-size: 0.9rem;
             font-weight: 600;
         }
-        input {
+        input, textarea {
             width: 100%;
             padding: 0.6rem 0.75rem;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 1rem;
+            font-family: inherit;
         }
-        input:focus {
+        input:focus, textarea:focus {
             outline: none;
             border-color: #0d6efd;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
         }
         button {
             width: 100%;
@@ -85,7 +90,7 @@
             margin-top: 0.5rem;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-            overflow: hidden;
+            overflow-x: auto;
         }
         .students-list table {
             width: 100%;
@@ -101,6 +106,7 @@
         .students-list th {
             background: #f8f9fa;
             font-weight: 600;
+            white-space: nowrap;
         }
         .students-list tr:last-child td { border-bottom: none; }
         .empty { color: #666; font-size: 0.9rem; }
@@ -130,15 +136,20 @@
             </div>
 
             <div class="form-group">
-                <label for="course">Course</label>
-                <input type="text" id="course" name="course"
-                       value="{{ old('course') }}" required>
-            </div>
-
-            <div class="form-group">
                 <label for="age">Age</label>
                 <input type="number" id="age" name="age" min="1" max="120"
                        value="{{ old('age') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">Contact</label>
+                <input type="text" id="contact" name="contact"
+                       value="{{ old('contact') }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" required>{{ old('address') }}</textarea>
             </div>
 
             <button type="submit">Save Student</button>
@@ -149,8 +160,9 @@
             <div class="result">
                 <p><strong>Saved successfully!</strong></p>
                 <p><strong>Name:</strong> {{ $name }}</p>
-                <p><strong>Course:</strong> {{ $course }}</p>
                 <p><strong>Age:</strong> {{ $age }}</p>
+                <p><strong>Contact:</strong> {{ $contact }}</p>
+                <p><strong>Address:</strong> {{ $address }}</p>
             </div>
         @endif
 
@@ -163,8 +175,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Course</th>
                             <th>Age</th>
+                            <th>Contact</th>
+                            <th>Address</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -172,8 +185,9 @@
                             <tr>
                                 <td>{{ $s->id }}</td>
                                 <td>{{ $s->name }}</td>
-                                <td>{{ $s->course }}</td>
                                 <td>{{ $s->age }}</td>
+                                <td>{{ $s->contact }}</td>
+                                <td>{{ $s->address }}</td>
                             </tr>
                         @endforeach
                     </tbody>
