@@ -24,20 +24,22 @@ class StudentController extends Controller
     public function show(Request $request)
     {
         $validated = $request->validate([
-            'name'   => 'required|string|max:100',
-            'course' => 'required|string|max:100',
-            'age'    => 'required|integer|min:1|max:120',
+            'name'    => 'required|string|max:100',
+            'age'     => 'required|integer|min:1|max:120',
+            'contact' => 'required|string|max:50',
+            'address' => 'required|string|max:255',
         ]);
 
-        // Save to the students table (from create_students_table migration)
+        // Save to the students table
         $student = Student::create($validated);
 
         $students = Student::latest()->get();
 
         return view('student', [
             'name'     => $student->name,
-            'course'   => $student->course,
             'age'      => $student->age,
+            'contact'  => $student->contact,
+            'address'  => $student->address,
             'students' => $students,
             'success'  => true,
         ]);
