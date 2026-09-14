@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentDetailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,16 +33,16 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // ------------------------------------------------------------
-// Student form (old)
+// Student (name, course, age)
 // ------------------------------------------------------------
-Route::get('/student', [StudentController::class, 'index'])->name('student.index');
-Route::post('/student', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student', [StudentController::class, 'create'])->name('student.create');
+Route::post('/student', [StudentController::class, 'store'])->name('student.store');
 
 // ------------------------------------------------------------
-// Student Details (new clean page)
+// Student details (address, contact) linked to a student
 // ------------------------------------------------------------
-Route::get('/student-details', [StudentController::class, 'details'])->name('studentDetails.index');
-Route::post('/student-details', [StudentController::class, 'storeDetails'])->name('studentDetails.store');
+Route::get('/student-details', [StudentDetailController::class, 'create'])->name('student-details.create');
+Route::post('/student-details', [StudentDetailController::class, 'store'])->name('student-details.store');
 
 // Calculator (Operator)
 Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
