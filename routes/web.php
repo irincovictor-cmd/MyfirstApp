@@ -34,10 +34,16 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // ------------------------------------------------------------
-// Simple admin panel (list + delete students)
+// Admin (password-protected)
 // ------------------------------------------------------------
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::delete('/admin/students/{student}', [AdminController::class, 'destroy'])->name('admin.students.destroy');
+Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+Route::middleware('admin')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::delete('/admin/students/{student}', [AdminController::class, 'destroy'])->name('admin.students.destroy');
+});
 
 // ------------------------------------------------------------
 // Student (name, course, age)
