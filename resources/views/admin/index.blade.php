@@ -35,13 +35,24 @@
         }
         h1 { font-size: 1.4rem; }
         .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+        .links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
         .links a {
             color: var(--accent);
             text-decoration: none;
-            margin-left: 1rem;
             font-size: 0.9rem;
         }
         .links a:hover { text-decoration: underline; }
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-logout:hover { color: var(--ink); border-color: var(--muted); }
         .flash {
             max-width: 960px;
             margin: 0 auto 1rem;
@@ -122,12 +133,16 @@
     <header>
         <div>
             <h1>Site administration</h1>
-            <p class="sub">MyfirstApp — students & details</p>
+            <p class="sub">MyfirstApp — students & details (protected)</p>
         </div>
         <div class="links">
             <a href="/student">Add student</a>
             <a href="/student-details">Add details</a>
             <a href="/home">Portfolio</a>
+            <form action="{{ route('admin.logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn-logout">Log out</button>
+            </form>
         </div>
     </header>
 
