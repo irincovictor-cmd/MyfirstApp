@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDetailController;
@@ -31,6 +32,11 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('portfolio', ['section' => 'contact']);
 })->name('contact');
+
+// ------------------------------------------------------------
+// Simple admin panel (list students + details from DB)
+// ------------------------------------------------------------
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 // ------------------------------------------------------------
 // Student (name, course, age)
