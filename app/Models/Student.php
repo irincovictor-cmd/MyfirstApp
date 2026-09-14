@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model
 {
@@ -13,8 +14,15 @@ class Student extends Model
      */
     protected $fillable = [
         'name',
+        'course',
         'age',
-        'contact',
-        'address',
     ];
+
+    /**
+     * A student can have one detail record (address + contact).
+     */
+    public function detail(): HasOne
+    {
+        return $this->hasOne(StudentDetail::class);
+    }
 }
