@@ -8,74 +8,31 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     /**
-     * Show the student form and list of saved students (GET /student)
+     * Show the student form (GET /student).
      */
-    public function index()
+    public function create()
     {
-        $students = Student::latest()->get();
-
-        return view('student', compact('students'));
+        return view('student');
     }
 
     /**
-     * Handle form submit (POST /student)
+     * Store a new student (POST /student).
      */
-    public function show(Request $request)
+    public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name'    => 'required|string|max:100',
-            'age'     => 'required|integer|min:1|max:120',
-            'contact' => 'required|string|max:50',
-            'address' => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required',
+            'course' => 'required',
+            'age' => 'required|integer',
         ]);
 
-        $student = Student::create($validated);
-
-        $students = Student::latest()->get();
-
-        return view('student', [
-            'name'     => $student->name,
-            'age'      => $student->age,
-            'contact'  => $student->contact,
-            'address'  => $student->address,
-            'students' => $students,
-            'success'  => true,
-        ]);
-    }
-
-    /**
-     * Show the Student Details form and list (GET /student-details)
-     */
-    public function details()
-    {
-        $students = Student::latest()->get();
-
-        return view('studentDetails', compact('students'));
-    }
-
-    /**
-     * Handle Student Details form submit (POST /student-details)
-     */
-    public function storeDetails(Request $request)
-    {
-        $validated = $request->validate([
-            'name'    => 'required|string|max:100',
-            'age'     => 'required|integer|min:1|max:120',
-            'contact' => 'required|string|max:50',
-            'address' => 'required|string|max:255',
+        Student::create([
+            'name' => $request->name,
+            'course' => $request->course,
+            'age' => $request->age,
         ]);
 
-        $student = Student::create($validated);
-
-        $students = Student::latest()->get();
-
-        return view('studentDetails', [
-            'name'     => $student->name,
-            'age'      => $student->age,
-            'contact'  => $student->contact,
-            'address'  => $student->address,
-            'students' => $students,
-            'success'  => true,
-        ]);
+        return redirect('/student')
+            ->with('success', 'Student added successfully!');
     }
 }
