@@ -34,9 +34,10 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // ------------------------------------------------------------
-// Simple admin panel (list students + details from DB)
+// Simple admin panel (list + delete students)
 // ------------------------------------------------------------
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::delete('/admin/students/{student}', [AdminController::class, 'destroy'])->name('admin.students.destroy');
 
 // ------------------------------------------------------------
 // Student (name, course, age)
