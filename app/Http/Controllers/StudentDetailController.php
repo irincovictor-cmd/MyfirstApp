@@ -19,7 +19,9 @@ class StudentDetailController extends Controller
     }
 
     /**
-     * Store student details linked to a student_id.
+     * Save student details linked to a student_id.
+     * student_id is UNIQUE: one detail row per student.
+     * If details already exist, update them instead of inserting again.
      */
     public function store(Request $request)
     {
@@ -29,11 +31,13 @@ class StudentDetailController extends Controller
             'contact' => 'required',
         ]);
 
-        StudentDetail::create([
-            'student_id' => $request->student_id,
-            'address' => $request->address,
-            'contact' => $request->contact,
-        ]);
+        StudentDetail::updateOrCreate(
+            ['student_id' => $request->student_id],
+            [
+                'address' => $request->address,
+                'contact' => $request->contact,
+            ]
+        );
 
         return redirect('/student-details')
             ->with('success', 'Student details saved successfully!');
