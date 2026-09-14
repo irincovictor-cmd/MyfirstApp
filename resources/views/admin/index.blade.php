@@ -13,6 +13,8 @@
             --muted: #94a3b8;
             --accent: #38bdf8;
             --ok: #4ade80;
+            --danger: #f87171;
+            --ok-bg: rgba(74, 222, 128, 0.12);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -40,6 +42,15 @@
             font-size: 0.9rem;
         }
         .links a:hover { text-decoration: underline; }
+        .flash {
+            max-width: 960px;
+            margin: 0 auto 1rem;
+            background: var(--ok-bg);
+            color: var(--ok);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
         .stats {
             max-width: 960px;
             margin: 0 auto 1.25rem;
@@ -78,7 +89,7 @@
             text-align: left;
             padding: 0.7rem 1rem;
             border-bottom: 1px solid var(--line);
-            vertical-align: top;
+            vertical-align: middle;
         }
         th { color: var(--muted); font-weight: 600; font-size: 0.8rem; }
         tr:last-child td { border-bottom: none; }
@@ -91,26 +102,27 @@
             border-radius: 4px;
             font-size: 0.75rem;
         }
-        .empty { padding: 1.5rem 1rem; color: var(--muted); }
-        @media (max-width: 640px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            thead { display: none; }
-            td {
-                border-bottom: none;
-                padding: 0.35rem 1rem;
-            }
-            tr {
-                border-bottom: 1px solid var(--line);
-                padding: 0.75rem 0;
-            }
+        .btn-delete {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
         }
+        .btn-delete:hover {
+            background: rgba(248, 113, 113, 0.15);
+        }
+        .empty { padding: 1.5rem 1rem; color: var(--muted); }
     </style>
 </head>
 <body>
     <header>
         <div>
             <h1>Site administration</h1>
-            <p class="sub">MyfirstApp — students & details (read overview)</p>
+            <p class="sub">MyfirstApp — students & details</p>
         </div>
         <div class="links">
             <a href="/student">Add student</a>
@@ -118,6 +130,10 @@
             <a href="/home">Portfolio</a>
         </div>
     </header>
+
+    @if (session('success'))
+        <div class="flash">{{ session('success') }}</div>
+    @endif
 
     <div class="stats">
         <div class="stat">
@@ -144,6 +160,7 @@
                         <th>Age</th>
                         <th>Address</th>
                         <th>Contact</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -167,6 +184,14 @@
                                 @else
                                     <span class="muted">no details</span>
                                 @endif
+                            </td>
+                            <td>
+                                <form action="{{ route('admin.students.destroy', $student) }}" method="POST"
+                                      onsubmit="return confirm('Delete {{ $student->name }}? Details will be removed too.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
