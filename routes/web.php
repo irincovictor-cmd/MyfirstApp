@@ -1,7 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BloodAdminController;
+use App\Http\Controllers\BloodDonorController;
+use App\Http\Controllers\BloodPageController;
+use App\Http\Controllers\ContactInfoController;
+use App\Http\Controllers\ContactUsQueryController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\RequirerController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDetailController;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +40,7 @@ Route::get('/contact', function () {
 })->name('contact');
 
 // ------------------------------------------------------------
-// Admin (password-protected)
+// Site admin panel (students list — password protected)
 // ------------------------------------------------------------
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
@@ -56,6 +62,27 @@ Route::post('/student', [StudentController::class, 'store'])->name('student.stor
 // ------------------------------------------------------------
 Route::get('/student-details', [StudentDetailController::class, 'create'])->name('student-details.create');
 Route::post('/student-details', [StudentDetailController::class, 'store'])->name('student-details.store');
+
+// ------------------------------------------------------------
+// Blood Donation System (ERD) — create forms tomorrow under resources/views/blood/
+// ------------------------------------------------------------
+Route::get('/blood/admin', [BloodAdminController::class, 'create'])->name('blood.admin.create');
+Route::post('/blood/admin', [BloodAdminController::class, 'store'])->name('blood.admin.store');
+
+Route::get('/blood/donor', [BloodDonorController::class, 'create'])->name('blood.donor.create');
+Route::post('/blood/donor', [BloodDonorController::class, 'store'])->name('blood.donor.store');
+
+Route::get('/blood/requirer', [RequirerController::class, 'create'])->name('blood.requirer.create');
+Route::post('/blood/requirer', [RequirerController::class, 'store'])->name('blood.requirer.store');
+
+Route::get('/blood/contact-query', [ContactUsQueryController::class, 'create'])->name('blood.contact-query.create');
+Route::post('/blood/contact-query', [ContactUsQueryController::class, 'store'])->name('blood.contact-query.store');
+
+Route::get('/blood/page', [BloodPageController::class, 'create'])->name('blood.page.create');
+Route::post('/blood/page', [BloodPageController::class, 'store'])->name('blood.page.store');
+
+Route::get('/blood/contact-info', [ContactInfoController::class, 'create'])->name('blood.contact-info.create');
+Route::post('/blood/contact-info', [ContactInfoController::class, 'store'])->name('blood.contact-info.store');
 
 // Calculator (Operator)
 Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
