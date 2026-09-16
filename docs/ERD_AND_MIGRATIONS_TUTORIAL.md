@@ -14,7 +14,7 @@ After migrate, you can verify everything in **phpMyAdmin**: http://localhost:808
 1. [What is an ERD?](#1-what-is-an-erd)
 2. [Why ERD before coding?](#2-why-erd-before-coding)
 3. [ERD building blocks](#3-erd-building-blocks)
-4. [Cardinality (how many related rows)](#4-cardinality-how-many-related-rows)
+4. [Cardinality](#4-cardinality-how-many-related-rows)
 5. [Step-by-step: design an ERD](#5-step-by-step-design-an-erd)
 6. [Example ERD: Student system](#6-example-erd-student-system)
 7. [Complete schema reference (phpMyAdmin)](#7-complete-schema-reference-phpmyadmin)
@@ -30,6 +30,7 @@ After migrate, you can verify everything in **phpMyAdmin**: http://localhost:808
 17. [Checklist for midterm](#17-checklist-for-midterm)
 18. [Common mistakes](#18-common-mistakes)
 19. [Oral defense lines](#19-oral-defense-lines)
+20. [Copy-paste sample code + terminal commands](#20-copy-paste-sample-code--terminal-commands)
 
 ---
 
@@ -43,8 +44,6 @@ It is a **picture (or clear sketch)** of:
 - **Attributes** → details of each thing (name, age, email…)
 - **Relationships** → how things connect (a student **has** details)
 
-It is **not** PHP code yet. It is the **plan** for your database.
-
 ```text
 ┌─────────────┐         ┌──────────────────┐
 │  STUDENT    │         │  STUDENT_DETAIL  │
@@ -56,21 +55,11 @@ It is **not** PHP code yet. It is the **plan** for your database.
 └─────────────┘         └──────────────────┘
 ```
 
-**PK** = Primary Key (unique id of a row)  
-**FK** = Foreign Key (points to another table’s PK)
+**PK** = Primary Key · **FK** = Foreign Key
 
 ---
 
 ## 2. Why ERD before coding?
-
-| Without ERD | With ERD |
-|-------------|----------|
-| Guess columns while coding | Clear list of tables/columns |
-| Forget relationships | Foreign keys planned |
-| Hard to explain to teacher | Easy to show on paper/slide |
-| Messy migrations | Migrations match the diagram |
-
-**Order good students use:**
 
 ```text
 1. Understand the problem
@@ -85,35 +74,17 @@ It is **not** PHP code yet. It is the **plan** for your database.
 
 ## 3. ERD building blocks
 
-### Entity
-
-A **noun** you care about: `Student`, `Product`, `Teacher`.
-
-In Laravel / MySQL this becomes a **table** (usually plural): `students`.
-
-### Attribute
-
-A **property** of an entity: `name`, `email`, `age`.
-
-In MySQL this becomes a **column** with a **data type**.
-
-### Primary key
-
-Unique id for each row. In Laravel almost always:
+| Idea | Becomes in MySQL |
+|------|------------------|
+| Entity | Table |
+| Attribute | Column + data type |
+| Primary key | `id` PK |
+| Foreign key | e.g. `student_id` |
+| Relationship | FK (+ unique if 1:1) |
 
 ```php
-$table->id();   // MySQL: BIGINT UNSIGNED, AUTO_INCREMENT, PRIMARY KEY
+$table->id();   // BIGINT UNSIGNED, AUTO_INCREMENT, PRIMARY KEY
 ```
-
-### Relationship
-
-A line between entities, e.g. “Student has one StudentDetail”.
-
-### Foreign key
-
-A column that **stores the other table’s id**, e.g. `student_id`.
-
-In phpMyAdmin you will see it under **Structure** and under **Relation view** / indexes.
 
 ---
 
@@ -121,334 +92,113 @@ In phpMyAdmin you will see it under **Structure** and under **Relation view** / 
 
 | Name | Meaning | Example |
 |------|---------|--------|
-| **One-to-one (1:1)** | One A ↔ one B | One student ↔ one detail record |
-| **One-to-many (1:N)** | One A ↔ many B | One student ↔ many grades |
-| **Many-to-many (M:N)** | Many A ↔ many B | Students ↔ Subjects (needs pivot table) |
+| **1:1** | One A ↔ one B | Student ↔ StudentDetail |
+| **1:N** | One A ↔ many B | Student ↔ many grades |
+| **M:N** | Many A ↔ many B | Students ↔ Subjects (pivot) |
 
-Our MyfirstApp student feature is **1:1**:
-
-- one `students` row  
-- at most one `studentdetails` row (because `student_id` is **UNIQUE**)
+This project: **1:1** (`student_id` is UNIQUE).
 
 ---
 
 ## 5. Step-by-step: design an ERD
 
-### Step A — Read the requirement
-
-Example requirement:
-
-> Save student name, course, and age.  
-> Later save address and contact for that student.
-
-### Step B — List entities
-
-- Student  
-- StudentDetail (or “ContactInfo”)
-
-### Step C — List attributes + planned data types
-
-| Entity | Attribute | Planned type |
-|--------|-----------|--------------|
-| Student | id | integer, PK, auto |
-| Student | name | string / VARCHAR |
-| Student | course | string / VARCHAR |
-| Student | age | integer / INT |
-| StudentDetail | id | integer, PK, auto |
-| StudentDetail | student_id | integer, FK, unique |
-| StudentDetail | address | string / VARCHAR |
-| StudentDetail | contact | string / VARCHAR |
-
-(Plus `created_at`, `updated_at` timestamps on both.)
-
-### Step D — Decide relationships
-
-- Details belong to one student  
-- One student has one details row → **1:1**  
-
-### Step E — Mark keys
-
-- Student: `id` **PK**  
-- StudentDetail: `id` **PK**, `student_id` **FK** → `students.id` (**UNIQUE**)
-
-### Step F — Draw boxes and lines
-
-Paper, whiteboard, draw.io, dbdiagram.io — any is fine for class.
+1. Read requirements  
+2. List entities  
+3. List attributes + types  
+4. Decide 1:1 / 1:N / M:N  
+5. Mark PK and FK  
+6. Draw boxes and lines  
 
 ---
 
 ## 6. Example ERD: Student system
 
-### Text ERD
-
 ```text
 ENTITY Student
-  - id          (PK)
-  - name        (string)
-  - course      (string)
-  - age         (integer)
-  - created_at
-  - updated_at
+  - id (PK), name, course, age, timestamps
 
 ENTITY StudentDetail
-  - id          (PK)
-  - student_id  (FK → Student.id, UNIQUE)
-  - address     (string)
-  - contact     (string)
-  - created_at
-  - updated_at
+  - id (PK), student_id (FK UNIQUE → Student.id), address, contact, timestamps
 
-RELATIONSHIP
-  Student (1) ---- (1) StudentDetail
-  "A student has one detail; a detail belongs to one student"
+RELATIONSHIP: Student (1) ---- (1) StudentDetail
 ```
 
-### ASCII diagram
-
 ```text
-          1                    1
-   students ──────────────── studentdetails
-   +------------+            +----------------+
-   | id (PK)    |◄───────────| student_id (FK)| UNIQUE
-   | name       |            | address        |
-   | course     |            | contact        |
-   | age        |            | id (PK)        |
-   +------------+            +----------------+
+   students 1──────────1 studentdetails
+   id (PK)  ◄──────────  student_id (FK, UNIQUE)
 ```
 
 ---
 
 ## 7. Complete schema reference (phpMyAdmin)
 
-This is what you should see after migrations run successfully.  
-Compare **Structure** tab in phpMyAdmin to these tables.
-
-> Laravel `$table->string()` → MySQL **VARCHAR(255)** by default  
-> Laravel `$table->id()` → MySQL **BIGINT UNSIGNED** AUTO_INCREMENT  
-> Laravel `$table->foreignId()` → MySQL **BIGINT UNSIGNED**  
-> Laravel `$table->integer()` → MySQL **INT**  
-> Laravel `$table->timestamps()` → **TIMESTAMP** nullable columns `created_at`, `updated_at`
-
-Exact display can vary slightly by MySQL version; names and roles stay the same.
-
----
+> `$table->string()` → VARCHAR(255)  
+> `$table->id()` / `foreignId()` → BIGINT UNSIGNED  
+> `$table->integer()` → INT  
+> `$table->timestamps()` → created_at, updated_at
 
 ### 7.1 Table: `students`
 
-**Entity:** Student  
-**Purpose:** Store basic student identity (name, course, age).
+| Column | MySQL type (typical) | Null | Key | Extra | Description |
+|--------|----------------------|------|-----|-------|-------------|
+| `id` | BIGINT UNSIGNED | NO | **PRI** | auto_increment | Primary key |
+| `name` | VARCHAR(255) | NO | | | Full name |
+| `course` | VARCHAR(255) | NO | | | e.g. BSIT |
+| `age` | INT | NO | | | Age |
+| `created_at` | TIMESTAMP | YES | | | Created |
+| `updated_at` | TIMESTAMP | YES | | | Updated |
 
-| Column | MySQL data type (typical) | Null | Key | Default | Extra | Description |
-|--------|---------------------------|------|-----|---------|-------|-------------|
-| `id` | BIGINT UNSIGNED | NO | **PRI** | NULL | auto_increment | Primary key |
-| `name` | VARCHAR(255) | NO | | NULL | | Student full name |
-| `course` | VARCHAR(255) | NO | | NULL | | Course (e.g. BSIT) |
-| `age` | INT | NO | | NULL | | Age in years |
-| `created_at` | TIMESTAMP | YES | | NULL | | Row created time |
-| `updated_at` | TIMESTAMP | YES | | NULL | | Row last updated |
-
-**Primary key:** `id`  
-**Foreign keys:** none (this is the **parent** table)  
-**Indexes:** PRIMARY on `id`
-
-**Laravel migration mapping:**
-
-| Column | Migration code |
-|--------|----------------|
-| id | `$table->id();` |
-| name | `$table->string('name');` |
-| course | `$table->string('course');` |
-| age | `$table->integer('age');` |
-| created_at, updated_at | `$table->timestamps();` |
-
----
+**PK:** `id` · **FK:** none (parent table)
 
 ### 7.2 Table: `studentdetails`
 
-**Entity:** StudentDetail  
-**Purpose:** Store address and contact linked to one student.
+| Column | MySQL type (typical) | Null | Key | Extra | Description |
+|--------|----------------------|------|-----|-------|-------------|
+| `id` | BIGINT UNSIGNED | NO | **PRI** | auto_increment | Primary key |
+| `student_id` | BIGINT UNSIGNED | NO | **UNI + FK** | | → `students.id` |
+| `address` | VARCHAR(255) | NO | | | Address |
+| `contact` | VARCHAR(255) | NO | | | Phone |
+| `created_at` | TIMESTAMP | YES | | | Created |
+| `updated_at` | TIMESTAMP | YES | | | Updated |
 
-| Column | MySQL data type (typical) | Null | Key | Default | Extra | Description |
-|--------|---------------------------|------|-----|---------|-------|-------------|
-| `id` | BIGINT UNSIGNED | NO | **PRI** | NULL | auto_increment | Primary key of this row |
-| `student_id` | BIGINT UNSIGNED | NO | **UNI** + **FK** | NULL | | Links to `students.id` (one detail per student) |
-| `address` | VARCHAR(255) | NO | | NULL | | Home / mailing address |
-| `contact` | VARCHAR(255) | NO | | NULL | | Phone or contact number |
-| `created_at` | TIMESTAMP | YES | | NULL | | Row created time |
-| `updated_at` | TIMESTAMP | YES | | NULL | | Row last updated |
+**FK:** `student_id` → `students.id`  
+**UNIQUE:** `student_id` (1:1)  
+**ON DELETE:** CASCADE  
 
-**Primary key:** `id`  
-**Foreign key:** `student_id` → `students`.`id`  
-**Unique index:** on `student_id` (enforces **1:1**)  
-**On delete:** **CASCADE** (delete student → delete their detail row)
-
-**Laravel migration mapping:**
-
-| Column | Migration code |
-|--------|----------------|
-| id | `$table->id();` |
-| student_id | `$table->foreignId('student_id')->unique()->constrained('students')->onDelete('cascade');` |
-| address | `$table->string('address');` |
-| contact | `$table->string('contact');` |
-| timestamps | `$table->timestamps();` |
-
----
-
-### 7.3 Relationship summary (for ERD + phpMyAdmin)
+### 7.3 Relationship summary
 
 | Item | Value |
 |------|--------|
-| Parent table | `students` |
-| Child table | `studentdetails` |
-| Relationship type | **One-to-one (1:1)** |
-| Parent PK | `students.id` |
-| Child FK column | `studentdetails.student_id` |
-| FK references | `students.id` |
-| FK constraint name (typical) | `studentdetails_student_id_foreign` |
-| Unique constraint (typical) | `studentdetails_student_id_unique` |
-| Delete rule | **ON DELETE CASCADE** |
-| Update rule | often RESTRICT / NO ACTION (MySQL default for FK) |
+| Parent | `students` |
+| Child | `studentdetails` |
+| Type | **1:1** |
+| FK column | `studentdetails.student_id` |
+| References | `students.id` |
+| Delete rule | CASCADE |
 
-**In words:**  
-Each row in `studentdetails` must point to exactly one existing `students.id`.  
-Each `students.id` may appear **at most once** in `studentdetails.student_id`.
+### 7.4 Sample linked rows
 
----
-
-### 7.4 Sample data (how rows look when linked)
-
-**`students`**
-
-| id | name | course | age | created_at | updated_at |
-|----|------|--------|-----|------------|------------|
-| 1 | victor | bsit | 21 | 2026-... | 2026-... |
-| 2 | maria | bsit | 20 | 2026-... | 2026-... |
-
-**`studentdetails`**
-
-| id | student_id | address | contact | created_at | updated_at |
-|----|------------|---------|---------|------------|------------|
-| 1 | 1 | Tawala, Panglao | 09XXXXXXXXX | 2026-... | 2026-... |
-
-Here `student_id = 1` means “details for victor”.  
-Student `maria` (id 2) has **no** details row yet.
-
----
-
-### 7.5 Other tables you may see in phpMyAdmin
-
-Laravel also creates system tables (not part of your student ERD):
-
-| Table | Role |
-|-------|------|
-| `migrations` | Log of which migrations already ran |
-| `users` | Default Laravel users |
-| `cache`, `jobs`, `sessions`, … | Framework extras |
-
-For the **student ERD**, focus only on **`students`** and **`studentdetails`**.
+**students:** id=1, name=victor, course=bsit, age=21  
+**studentdetails:** student_id=1, address=Tawala, contact=09…
 
 ---
 
 ## 8. Translate ERD → Laravel tables
 
-| ERD idea | Laravel | MySQL result |
-|----------|---------|--------------|
-| Entity Student | Table `students` | Table `students` |
-| Attribute name | `$table->string('name')` | VARCHAR(255) |
-| PK | `$table->id()` | BIGINT PK AI |
-| FK student_id | `$table->foreignId(...)->constrained(...)` | BIGINT + FK |
-| 1:1 | FK + `->unique()` | UNIQUE index on FK |
-| Timestamps | `$table->timestamps()` | created_at, updated_at |
-
-### Naming rules (Laravel habits)
-
-| Thing | Convention |
-|-------|------------|
-| Table | plural snake: `students` |
-| Model | singular Studly: `Student` |
-| FK | `{model}_id` → `student_id` |
-
-Our details table is named **`studentdetails`** (course style). Eloquent default would be `student_details`, so the model sets `protected $table = 'studentdetails'`.
+| ERD | Migration | MySQL |
+|-----|-----------|-------|
+| Entity Student | `students` | table |
+| name | `$table->string('name')` | VARCHAR(255) |
+| PK | `$table->id()` | BIGINT PK |
+| FK 1:1 | `foreignId` + `unique` | FK + UNIQUE |
 
 ---
 
-## 9. Create migration files
+## 9–11. Migrations & foreign keys
 
-```bash
-php artisan make:migration create_students_table
-php artisan make:migration create_studentdetails_table
-```
+See **Section 20** for full copy-paste files and every command.
 
-Docker:
-
-```bash
-docker exec -it laravel_php php artisan make:migration create_students_table
-docker exec -it laravel_php php artisan make:migration create_studentdetails_table
-```
-
-**Rule:** parent table migration must run **before** child table (students before studentdetails).
-
----
-
-## 10. Write the migrations
-
-### 10.1 Students (parent entity)
-
-```php
-public function up(): void
-{
-    Schema::create('students', function (Blueprint $table) {
-        $table->id();                 // PK
-        $table->string('name');       // VARCHAR(255)
-        $table->string('course');
-        $table->integer('age');       // INT
-        $table->timestamps();         // created_at, updated_at
-    });
-}
-
-public function down(): void
-{
-    Schema::dropIfExists('students');
-}
-```
-
-### 10.2 Student details (child entity + relationship)
-
-```php
-public function up(): void
-{
-    Schema::create('studentdetails', function (Blueprint $table) {
-        $table->id();
-
-        // Relationship from ERD: FK to students, 1:1 → unique
-        $table->foreignId('student_id')
-            ->unique()
-            ->constrained('students')
-            ->onDelete('cascade');
-
-        $table->string('address');
-        $table->string('contact');
-        $table->timestamps();
-    });
-}
-
-public function down(): void
-{
-    Schema::dropIfExists('studentdetails');
-}
-```
-
-### Map ERD line → code → phpMyAdmin
-
-| ERD | Migration | phpMyAdmin |
-|-----|-----------|------------|
-| student_id → Student | `foreignId(...)->constrained('students')` | FK on `student_id` |
-| only one detail per student | `->unique()` | UNIQUE on `student_id` |
-| delete student removes detail | `->onDelete('cascade')` | FK delete rule CASCADE |
-
----
-
-## 11. Foreign keys in plain English
+Core FK line:
 
 ```php
 $table->foreignId('student_id')
@@ -457,205 +207,366 @@ $table->foreignId('student_id')
     ->onDelete('cascade');
 ```
 
-| Part | Meaning | phpMyAdmin |
-|------|--------|------------|
-| `foreignId('student_id')` | Column holds a student id | Column `student_id` |
-| `constrained('students')` | Must match `students.id` | Foreign key relation |
-| `unique()` | One details row per student | Unique index |
-| `onDelete('cascade')` | Delete student → delete detail | ON DELETE CASCADE |
-
 ---
 
 ## 12. Run migrations
 
 ```bash
 php artisan migrate
+# or Docker:
 docker exec -it laravel_php php artisan migrate
-php artisan migrate:status
-
-# WARNING: wipes all tables then rebuilds
-php artisan migrate:fresh
 ```
 
 ---
 
 ## 13. How to check in phpMyAdmin
 
-1. Open **http://localhost:8080**  
-2. Log in (root / secret for this Docker stack, if unchanged)  
-3. Open the database from `.env` (`DB_DATABASE` — often **`laravel`**)  
-4. Click table **`students`** → **Structure** → compare to [section 7.1](#71-table-students)  
-5. Click table **`studentdetails`** → **Structure** → compare to [section 7.2](#72-table-studentdetails)  
-6. Open **Indexes** (or Relation view) on `studentdetails` → confirm **UNIQUE** + **FOREIGN** on `student_id`  
-7. **Browse** data after using the web forms at `/student` and `/student-details`  
-
-If forms save but you see no new rows, you are likely viewing the **wrong database** (e.g. `myFirstApp` vs `laravel`).
+1. http://localhost:8080  
+2. Open DB from `.env` (`DB_DATABASE`)  
+3. `students` → Structure  
+4. `studentdetails` → Structure + Indexes (UNIQUE + FOREIGN on `student_id`)  
+5. Browse data after using forms  
 
 ---
 
 ## 14. Models after the ERD
 
-Migrations create **tables**. Models are how **PHP** uses them.
+See Section 20 for full model code (`$fillable`, `hasOne`, `belongsTo`).
 
-### Student
+---
+
+## 15. Bigger example (optional M:N pivot)
 
 ```php
+$table->foreignId('student_id')->constrained()->onDelete('cascade');
+$table->foreignId('subject_id')->constrained()->onDelete('cascade');
+$table->unique(['student_id', 'subject_id']);
+```
+
+---
+
+## 16. Drawing tools
+
+Paper · [dbdiagram.io](https://dbdiagram.io) · draw.io · phpMyAdmin Designer
+
+---
+
+## 17. Checklist for midterm
+
+- [ ] Entities, columns, data types  
+- [ ] PK / FK / cardinality  
+- [ ] Migrations run  
+- [ ] phpMyAdmin Structure matches section 7  
+
+---
+
+## 18. Common mistakes
+
+Wrong DB in phpMyAdmin · child before parent · no `unique()` on 1:1 · migrate only on host while app uses Docker
+
+---
+
+## 19. Oral defense lines
+
+“ERD plans tables. Migrations create them. `student_id` FK to `students.id` with UNIQUE makes 1:1. phpMyAdmin Structure verifies types and keys.”
+
+---
+
+## 20. Copy-paste sample code + terminal commands
+
+Use this section when you recreate the feature on a midterm project.
+
+### 20.1 Terminal — Docker stack (MyfirstApp style)
+
+```bash
+# Go to compose folder (parent of myFirstApp on your PC)
+cd ~/project2
+docker compose up -d
+
+# Go to Laravel app
+cd ~/project2/myFirstApp
+git pull origin main
+
+# Optional: see DB settings
+grep DB_ .env
+
+# Create migration files (only if starting from zero)
+docker exec -it laravel_php php artisan make:migration create_students_table
+docker exec -it laravel_php php artisan make:migration create_studentdetails_table
+
+# After you paste migration code into those files:
+docker exec -it laravel_php php artisan migrate
+
+# Or rebuild all tables (WIPES DATA)
+docker exec -it laravel_php php artisan migrate:fresh
+
+# Check migration status
+docker exec -it laravel_php php artisan migrate:status
+
+# Clear caches if pages act weird
+docker exec -it laravel_php php artisan config:clear
+docker exec -it laravel_php php artisan route:clear
+docker exec -it laravel_php php artisan view:clear
+```
+
+### 20.2 Terminal — without Docker (host PHP)
+
+```bash
+cd ~/project2/myFirstApp
+
+php artisan make:migration create_students_table
+php artisan make:migration create_studentdetails_table
+
+# edit the migration files, then:
+php artisan migrate
+php artisan migrate:status
+php artisan serve
+```
+
+### 20.3 Full migration — `students`
+
+Path: `database/migrations/xxxx_create_students_table.php`  
+(Replace `up` / `down` with this.)
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('students', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('course');
+            $table->integer('age');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('students');
+    }
+};
+```
+
+### 20.4 Full migration — `studentdetails`
+
+Path: `database/migrations/xxxx_create_studentdetails_table.php`  
+(**Run after** students migration.)
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('studentdetails', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('student_id')
+                ->unique()
+                ->constrained('students')
+                ->onDelete('cascade');
+            $table->string('address');
+            $table->string('contact');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('studentdetails');
+    }
+};
+```
+
+### 20.5 Model — `app/Models/Student.php`
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 class Student extends Model
 {
-    protected $fillable = ['name', 'course', 'age'];
+    protected $fillable = [
+        'name',
+        'course',
+        'age',
+    ];
 
-    public function detail()
+    public function detail(): HasOne
     {
         return $this->hasOne(StudentDetail::class);
     }
 }
 ```
 
-### StudentDetail
+### 20.6 Model — `app/Models/StudentDetail.php`
 
 ```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class StudentDetail extends Model
 {
     protected $table = 'studentdetails';
 
-    protected $fillable = ['student_id', 'address', 'contact'];
+    protected $fillable = [
+        'student_id',
+        'address',
+        'contact',
+    ];
 
-    public function student()
+    public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
 }
 ```
 
-| ERD relationship | Eloquent | DB |
-|------------------|----------|-----|
-| Student has one Detail | `hasOne` | 1:1 via unique FK |
-| Detail belongs to Student | `belongsTo` | `student_id` → `students.id` |
+### 20.7 Create model files via Artisan (optional)
 
----
+```bash
+docker exec -it laravel_php php artisan make:model Student
+docker exec -it laravel_php php artisan make:model StudentDetail
 
-## 15. Bigger example (optional)
+# then paste fillable + relationships into the generated files
+```
 
-Many-to-many: students ↔ subjects via `enrollments`.
+### 20.8 Minimal controller store examples
+
+**Student**
 
 ```php
-Schema::create('enrollments', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('student_id')->constrained()->onDelete('cascade');
-    $table->foreignId('subject_id')->constrained()->onDelete('cascade');
-    $table->timestamps();
-    $table->unique(['student_id', 'subject_id']);
-});
+$request->validate([
+    'name' => 'required',
+    'course' => 'required',
+    'age' => 'required|integer',
+]);
+
+Student::create([
+    'name' => $request->name,
+    'course' => $request->course,
+    'age' => $request->age,
+]);
 ```
 
-| Column | Role |
-|--------|------|
-| student_id | FK → students.id |
-| subject_id | FK → subjects.id |
-| unique pair | same student+subject only once |
+**StudentDetail**
 
----
+```php
+$request->validate([
+    'student_id' => 'required|exists:students,id',
+    'address' => 'required',
+    'contact' => 'required',
+]);
 
-## 16. Drawing tools for ERD
+StudentDetail::updateOrCreate(
+    ['student_id' => $request->student_id],
+    [
+        'address' => $request->address,
+        'contact' => $request->contact,
+    ]
+);
+```
 
-| Tool | Notes |
-|------|--------|
-| Paper / whiteboard | Fast for exams |
-| [dbdiagram.io](https://dbdiagram.io) | Type tables, get diagram |
-| draw.io | Free boxes and arrows |
-| phpMyAdmin Designer | Can show relations after FK exists |
-| MySQL Workbench | Reverse-engineer from live DB |
+### 20.9 Minimal routes
 
-### dbdiagram syntax for our example
+```php
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentDetailController;
+
+Route::get('/student', [StudentController::class, 'create']);
+Route::post('/student', [StudentController::class, 'store']);
+
+Route::get('/student-details', [StudentDetailController::class, 'create']);
+Route::post('/student-details', [StudentDetailController::class, 'store']);
+```
+
+### 20.10 Minimal Blade form bits
+
+```blade
+<form method="POST" action="/student">
+    @csrf
+    <input name="name" required>
+    <input name="course" required>
+    <input name="age" type="number" required>
+    <button type="submit">Save</button>
+</form>
+```
+
+```blade
+<form method="POST" action="/student-details">
+    @csrf
+    <select name="student_id" required>
+        @foreach ($students as $student)
+            <option value="{{ $student->id }}">{{ $student->name }}</option>
+        @endforeach
+    </select>
+    <input name="address" required>
+    <input name="contact" required>
+    <button type="submit">Save</button>
+</form>
+```
+
+### 20.11 Order of work (follow this)
 
 ```text
-Table students {
-  id bigint [pk, increment]
-  name varchar
-  course varchar
-  age int
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table studentdetails {
-  id bigint [pk, increment]
-  student_id bigint [unique, ref: - students.id]
-  address varchar
-  contact varchar
-  created_at timestamp
-  updated_at timestamp
-}
+1. docker compose up -d
+2. make:migration (students, then studentdetails)
+3. Paste migration code
+4. php artisan migrate   (inside laravel_php if Docker)
+5. Create/paste models
+6. Controllers + routes + blade
+7. phpMyAdmin → Structure on both tables
+8. Test /student and /student-details in browser
 ```
 
----
+### 20.12 URLs to open
 
-## 17. Checklist for midterm
-
-- [ ] Entities listed  
-- [ ] Attributes + **data types** listed  
-- [ ] PK marked  
-- [ ] FK marked with referenced table  
-- [ ] Cardinality (1:1 / 1:N / M:N) labeled  
-- [ ] Migration parent then child  
-- [ ] `constrained` + `unique` if 1:1  
-- [ ] `migrate` OK  
-- [ ] phpMyAdmin **Structure** matches section 7  
-- [ ] Sample insert visible under **Browse**  
-
----
-
-## 18. Common mistakes
-
-| Mistake | What you see |
-|---------|----------------|
-| Wrong DB in phpMyAdmin | Empty `students` while app works |
-| Child migrated before parent | FK creation error |
-| No `unique()` on 1:1 FK | Multiple details per student allowed |
-| Only model, no migration | Table missing in phpMyAdmin |
-| Forgot Docker migrate | Host DB updated, app DB not |
-
----
-
-## 19. Oral defense lines
-
-**What is an ERD?**  
-“A diagram of entities, attributes, and relationships that plans the database.”
-
-**What tables did you create?**  
-“`students` with id, name, course, age; `studentdetails` with id, student_id, address, contact.”
-
-**What is the FK?**  
-“`studentdetails.student_id` references `students.id`.”
-
-**Why unique on student_id?**  
-“To enforce one-to-one: one details row per student.”
-
-**How do you verify?**  
-“phpMyAdmin Structure for columns/types and Indexes for the foreign key.”
+| What | URL |
+|------|-----|
+| Add student | http://localhost:8000/student |
+| Add details | http://localhost:8000/student-details |
+| phpMyAdmin | http://localhost:8080 |
+| Admin (if enabled) | http://localhost:8000/admin |
 
 ---
 
 ## Final pipeline
 
 ```text
-Problem → ERD (tables, columns, types, PK, FK, cardinality)
-       → Migrations
-       → php artisan migrate
-       → phpMyAdmin verifies Structure + data
-       → Models / forms use the tables
+ERD → migration code → artisan migrate → phpMyAdmin check → models → forms
 ```
 
-**ERD is the map. Migrations build the tables. phpMyAdmin proves they exist.**
+**ERD is the map. Migrations build the tables. phpMyAdmin proves columns, types, and FK.**
 
 ---
 
 ## See also
 
-- `docs/STUDENT_MIGRATION_GUIDE.md` — full student feature walkthrough  
-- `docs/STUDENT_DB_AND_DEBUGGING.md` — Docker / DB debugging  
-- Migrations: `database/migrations/2026_08_26_*students*` and `2026_09_14_*studentdetails*`  
+- `docs/STUDENT_MIGRATION_GUIDE.md`  
+- `docs/STUDENT_DB_AND_DEBUGGING.md`  
+- `database/migrations/2026_08_26_014638_create_students_table.php`  
+- `database/migrations/2026_09_14_000001_create_studentdetails_table.php`  
 
 ---
 
-*For BSIT study / midterm: ERD, columns, data types, FK — verifiable in phpMyAdmin.*
+*BSIT study / midterm: ERD, columns, types, FK, sample code, and commands.*
