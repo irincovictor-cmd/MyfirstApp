@@ -14,7 +14,7 @@ class BloodAdminController extends Controller
 {
     public function dashboard()
     {
-        return view('blood.admin-dashboard', [
+        return view('admin.index', [
             'admins' => Admin::count(),
             'donors' => BloodDonor::count(),
             'requests' => Requirer::count(),
@@ -28,7 +28,7 @@ class BloodAdminController extends Controller
 
     public function create()
     {
-        return view('blood.admin-form');
+        return view('admin.create');
     }
 
     public function store(Request $request)
@@ -40,7 +40,6 @@ class BloodAdminController extends Controller
         ]);
 
         $data['password'] = Hash::make($data['password']);
-
         Admin::create($data);
 
         return redirect()
