@@ -5,33 +5,53 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
-/**
- * CRUD for tblpages.
- * View name: blood.page-form
- */
 class BloodPageController extends Controller
 {
+    public function index()
+    {
+        $pages = Page::orderByDesc('id')->get();
+
+        return view('blood.pages', compact('pages'));
+    }
+
     public function create()
     {
-        $admins = Admin::orderBy('name')->get();
-
-        return view('blood.page-form', compact('admins'));
+        return view('blood.page-form');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'admin_id' => 'required|exists:tbladmin,id',
             'page_title' => 'required|string|max:255',
-            'page_slug' => 'required|string|max:255|unique:tblpages,page_slug',
+            'page_slug' => 'nullable|string|max:255|unique:tblpages,page_slug',
             'page_content' => 'nullable|string',
         ]);
+
+        $data['admin_id'] = $this->defaultAdminId();
+        $data['page_slug'] = $data['page_slug']
+            ?? Str::slug($data['page_title']).'-'.Str::lower(Str::random(4));
 
         Page::create($data);
 
         return redirect()
-            ->route('blood.page.create')
-            ->with('success', 'Page saved.');
+            ->route('blood.pages')
+            ->with('success', 'Page created.');
+    }
+
+    private function defaultAdminId(): int
+    {
+        $admin = Admin::first();
+        if ($admin) {
+            return $admin->id;
+        }
+
+        return Admin::create([
+            'name' => 'System',
+            'email' => 'system@blood.local',
+            'password' => Hash::make('secret'),
+        ])->id;
     }
 }
