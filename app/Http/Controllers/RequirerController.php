@@ -5,24 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Requirer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-/**
- * CRUD for tblrequirer.
- * View name: blood.requirer-form
- */
 class RequirerController extends Controller
 {
+    public function index()
+    {
+        $requirers = Requirer::with('admin')->orderByDesc('id')->get();
+
+        return view('blood.requests', compact('requirers'));
+    }
+
     public function create()
     {
-        $admins = Admin::orderBy('name')->get();
-
-        return view('blood.requirer-form', compact('admins'));
+        return view('blood.requirer-form');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'admin_id' => 'required|exists:tbladmin,id',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'blood_type' => 'required|string|max:10',
@@ -32,13 +33,28 @@ class RequirerController extends Controller
             'status' => 'nullable|string|max:50',
         ]);
 
+        $data['admin_id'] = $this->defaultAdminId();
         $data['units_needed'] = $data['units_needed'] ?? 1;
         $data['status'] = $data['status'] ?? 'pending';
 
         Requirer::create($data);
 
         return redirect()
-            ->route('blood.requirer.create')
-            ->with('success', 'Requirer saved.');
+            ->route('blood.requests')
+            ->with('success', 'Blood request submitted.');
+    }
+
+    private function defaultAdminId(): int
+    {
+        $admin = Admin::first();
+        if ($admin) {
+            return $admin->id;
+        }
+
+        return Admin::create([
+            'name' => 'System',
+            'email' => 'system@blood.local',
+            'password' => Hash::make('secret'),
+        ])->id;
     }
 }
