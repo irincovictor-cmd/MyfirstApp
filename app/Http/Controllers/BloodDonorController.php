@@ -5,24 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\BloodDonor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-/**
- * CRUD for tblblooddonors.
- * View name: blood.donor-form
- */
 class BloodDonorController extends Controller
 {
+    public function index()
+    {
+        $donors = BloodDonor::with('admin')->orderByDesc('id')->get();
+
+        return view('blood.donors', compact('donors'));
+    }
+
     public function create()
     {
-        $admins = Admin::orderBy('name')->get();
-
-        return view('blood.donor-form', compact('admins'));
+        return view('blood.donor-form');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'admin_id' => 'required|exists:tbladmin,id',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'blood_type' => 'required|string|max:10',
@@ -32,12 +33,27 @@ class BloodDonorController extends Controller
             'status' => 'nullable|string|max:50',
         ]);
 
+        $data['admin_id'] = $this->defaultAdminId();
         $data['status'] = $data['status'] ?? 'pending';
 
         BloodDonor::create($data);
 
         return redirect()
-            ->route('blood.donor.create')
-            ->with('success', 'Blood donor saved.');
+            ->route('blood.donors')
+            ->with('success', 'Donor registered successfully.');
+    }
+
+    private function defaultAdminId(): int
+    {
+        $admin = Admin::first();
+        if ($admin) {
+            return $admin->id;
+        }
+
+        return Admin::create([
+            'name' => 'System',
+            'email' => 'system@blood.local',
+            'password' => Hash::make('secret'),
+        ])->id;
     }
 }
