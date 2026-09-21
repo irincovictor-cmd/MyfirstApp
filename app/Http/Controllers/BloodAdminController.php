@@ -3,14 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\BloodDonor;
+use App\Models\ContactUsQuery;
+use App\Models\Page;
+use App\Models\Requirer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-/**
- * CRUD for tbladmin (Blood Donation System).
- * View name: blood.admin-form
- */
 class BloodAdminController extends Controller
 {
+    public function dashboard()
+    {
+        return view('blood.admin-dashboard', [
+            'admins' => Admin::count(),
+            'donors' => BloodDonor::count(),
+            'requests' => Requirer::count(),
+            'messages' => ContactUsQuery::count(),
+            'pages' => Page::count(),
+            'recentDonors' => BloodDonor::orderByDesc('id')->limit(5)->get(),
+            'recentRequests' => Requirer::orderByDesc('id')->limit(5)->get(),
+            'recentMessages' => ContactUsQuery::orderByDesc('id')->limit(5)->get(),
+        ]);
+    }
+
     public function create()
     {
         return view('blood.admin-form');
@@ -24,12 +39,12 @@ class BloodAdminController extends Controller
             'password' => 'required|string|min:4',
         ]);
 
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = Hash::make($data['password']);
 
         Admin::create($data);
 
         return redirect()
-            ->route('blood.admin.create')
-            ->with('success', 'Admin saved.');
+            ->route('blood.admin.dashboard')
+            ->with('success', 'Admin account created.');
     }
 }
