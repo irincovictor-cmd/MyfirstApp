@@ -10,10 +10,10 @@ class BloodHomeController extends Controller
 {
     public function index()
     {
-        $donorCount = BloodDonor::count();
-        $requestCount = Requirer::count();
-        $pageCount = Page::count();
-
-        return view('blood.home', compact('donorCount', 'requestCount', 'pageCount'));
+        return view('home', [
+            'donorCount' => BloodDonor::count(),
+            'requestCount' => Requirer::count(),
+            'pageCount' => Page::count(),
+        ]);
     }
 }
