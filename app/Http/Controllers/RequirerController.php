@@ -11,14 +11,27 @@ class RequirerController extends Controller
 {
     public function index()
     {
-        $requirers = Requirer::with('admin')->orderByDesc('id')->get();
+        $requirers = Requirer::orderByDesc('id')->get();
 
-        return view('blood.requests', compact('requirers'));
+        return view('blood-request.index', compact('requirers'));
+    }
+
+    /** Assignment folder: requirers/ */
+    public function requirersIndex()
+    {
+        $requirers = Requirer::orderByDesc('id')->get();
+
+        return view('requirers.index', compact('requirers'));
     }
 
     public function create()
     {
-        return view('blood.requirer-form');
+        return view('blood-request.create');
+    }
+
+    public function requirersCreate()
+    {
+        return view('requirers.create');
     }
 
     public function store(Request $request)
@@ -39,9 +52,7 @@ class RequirerController extends Controller
 
         Requirer::create($data);
 
-        return redirect()
-            ->route('blood.requests')
-            ->with('success', 'Blood request submitted.');
+        return redirect()->route('blood.requests')->with('success', 'Blood request submitted.');
     }
 
     private function defaultAdminId(): int
