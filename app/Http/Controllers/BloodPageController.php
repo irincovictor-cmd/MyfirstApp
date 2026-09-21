@@ -14,12 +14,12 @@ class BloodPageController extends Controller
     {
         $pages = Page::orderByDesc('id')->get();
 
-        return view('blood.pages', compact('pages'));
+        return view('pages.index', compact('pages'));
     }
 
     public function create()
     {
-        return view('blood.page-form');
+        return view('pages.create');
     }
 
     public function store(Request $request)
@@ -36,9 +36,7 @@ class BloodPageController extends Controller
 
         Page::create($data);
 
-        return redirect()
-            ->route('blood.pages')
-            ->with('success', 'Page created.');
+        return redirect()->route('blood.pages')->with('success', 'Page created.');
     }
 
     private function defaultAdminId(): int
