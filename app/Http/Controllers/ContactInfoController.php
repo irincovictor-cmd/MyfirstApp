@@ -7,18 +7,21 @@ use App\Models\ContactInfo;
 use App\Models\Requirer;
 use Illuminate\Http\Request;
 
-/**
- * CRUD for tblcontactinfo.
- * View name: blood.contact-info-form
- */
 class ContactInfoController extends Controller
 {
+    public function index()
+    {
+        $items = ContactInfo::orderByDesc('id')->get();
+
+        return view('contact-info.index', compact('items'));
+    }
+
     public function create()
     {
         $donors = BloodDonor::orderBy('last_name')->get();
         $requirers = Requirer::orderBy('last_name')->get();
 
-        return view('blood.contact-info-form', compact('donors', 'requirers'));
+        return view('contact-info.create', compact('donors', 'requirers'));
     }
 
     public function store(Request $request)
@@ -34,7 +37,7 @@ class ContactInfoController extends Controller
         ContactInfo::create($data);
 
         return redirect()
-            ->route('blood.contact-info.create')
+            ->route('blood.contact-info.index')
             ->with('success', 'Contact info saved.');
     }
 }
