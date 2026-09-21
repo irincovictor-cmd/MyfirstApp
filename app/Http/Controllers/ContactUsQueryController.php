@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class ContactUsQueryController extends Controller
 {
+    public function index()
+    {
+        $messages = ContactUsQuery::orderByDesc('id')->get();
+
+        return view('contact-queries.index', compact('messages'));
+    }
+
     public function create()
     {
-        return view('blood.contact');
+        return view('contact-queries.create');
     }
 
     public function store(Request $request)
@@ -26,8 +33,6 @@ class ContactUsQueryController extends Controller
 
         ContactUsQuery::create($data);
 
-        return redirect()
-            ->route('blood.contact')
-            ->with('success', 'Message sent. Thank you.');
+        return redirect()->route('blood.contact')->with('success', 'Message sent. Thank you.');
     }
 }
