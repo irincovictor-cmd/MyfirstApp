@@ -11,14 +11,14 @@ class BloodDonorController extends Controller
 {
     public function index()
     {
-        $donors = BloodDonor::with('admin')->orderByDesc('id')->get();
+        $donors = BloodDonor::orderByDesc('id')->get();
 
-        return view('blood.donors', compact('donors'));
+        return view('blood-donors.index', compact('donors'));
     }
 
     public function create()
     {
-        return view('blood.donor-form');
+        return view('blood-donors.create');
     }
 
     public function store(Request $request)
@@ -38,9 +38,7 @@ class BloodDonorController extends Controller
 
         BloodDonor::create($data);
 
-        return redirect()
-            ->route('blood.donors')
-            ->with('success', 'Donor registered successfully.');
+        return redirect()->route('blood.donors')->with('success', 'Donor registered successfully.');
     }
 
     private function defaultAdminId(): int
