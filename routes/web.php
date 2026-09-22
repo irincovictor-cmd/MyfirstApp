@@ -13,9 +13,10 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDetailController;
 use Illuminate\Support\Facades\Route;
 
-// Portfolio
+// Portfolio (same blade — several URLs)
 Route::get('/', fn () => redirect()->route('home'));
 Route::get('/home', fn () => view('portfolio', ['section' => 'home']))->name('home');
+Route::get('/portfolio', fn () => view('portfolio', ['section' => 'home']))->name('portfolio');
 Route::get('/work', fn () => view('portfolio', ['section' => 'work']))->name('work');
 Route::get('/about', fn () => view('portfolio', ['section' => 'about']))->name('about');
 Route::get('/contact', fn () => view('portfolio', ['section' => 'contact']))->name('contact');
