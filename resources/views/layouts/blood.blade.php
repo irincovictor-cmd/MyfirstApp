@@ -48,9 +48,34 @@
         .badge { display: inline-block; padding: .2rem .55rem; border-radius: 999px; background: #fff1f2; color: var(--blood); font-size: .78rem; font-weight: 600; }
         label { display: block; font-weight: 600; font-size: .88rem; margin: .85rem 0 .35rem; }
         input, select, textarea { width: 100%; padding: .65rem .75rem; border-radius: .65rem; border: 1px solid var(--line); font-family: inherit; }
-        .form-actions { margin-top: 1.25rem; display: flex; gap: .5rem; flex-wrap: wrap; }
+        .form-actions { margin-top: 1.25rem; display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; }
         footer { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem 2rem; color: var(--muted); font-size: .85rem; }
         .head-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
+
+        /* Centered form pages (donor, request, contact, admin register, etc.) */
+        .form-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 36rem;
+            margin: 0 auto;
+        }
+        .form-page .section-title,
+        .form-page .section-sub { text-align: center; }
+        .form-page .section-sub { max-width: 28rem; }
+        .form-card {
+            width: 100%;
+            max-width: 28rem;
+            margin: 0.5rem auto 0;
+            text-align: left;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 1.35rem 1.5rem 1.5rem;
+            box-shadow: 0 12px 32px rgba(26, 18, 20, 0.06);
+        }
     </style>
 </head>
 <body>
