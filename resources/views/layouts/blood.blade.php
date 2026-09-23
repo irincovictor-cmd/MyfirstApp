@@ -42,7 +42,6 @@
         }
         a { color: inherit; }
 
-        /* —— Topbar —— */
         .topbar {
             background: #0f172a;
             color: #f8fafc;
@@ -115,7 +114,6 @@
             flex: 1;
         }
 
-        /* —— Alerts —— */
         .alert {
             background: var(--ok-soft);
             color: var(--ok);
@@ -136,7 +134,6 @@
         }
         .alert-error::before { content: "!"; }
 
-        /* —— Hero —— */
         .hero {
             background: linear-gradient(145deg, #0f172a 0%, #134e4a 70%, #0f766e 100%);
             color: #f8fafc;
@@ -191,7 +188,6 @@
             position: relative;
         }
 
-        /* —— Buttons —— */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -238,7 +234,6 @@
         }
         .btn-ghost:hover { background: #f8fafc; }
 
-        /* —— Typography / sections —— */
         .section-title {
             font-family: var(--display);
             font-size: 1.5rem;
@@ -262,7 +257,6 @@
         .head-row .section-title { margin-bottom: 0.2rem; }
         .head-row .section-sub { margin-bottom: 0; }
 
-        /* —— Grids & cards —— */
         .grid-3 {
             display: grid;
             gap: 1rem;
@@ -307,7 +301,6 @@
             margin-top: 0.15rem;
         }
 
-        /* Feature / step cards */
         .feature {
             display: flex;
             gap: 1rem;
@@ -330,7 +323,6 @@
             color: var(--blood);
         }
 
-        /* —— Tables —— */
         .table-wrap {
             overflow-x: auto;
             border-radius: var(--radius);
@@ -360,7 +352,6 @@
         tbody tr:last-child td { border-bottom: none; }
         tbody tr:hover td { background: #f8fafc; }
 
-        /* —— Badges / status —— */
         .badge {
             display: inline-block;
             padding: 0.22rem 0.6rem;
@@ -385,8 +376,48 @@
         .status-rejected, .status-closed {
             background: #fef2f2; color: #9f1239;
         }
+        .status-urgent {
+            background: #b91c1c; color: #fff;
+        }
 
-        /* —— Empty state —— */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .filter-bar .field { margin-bottom: 0; min-width: 10rem; }
+        .filter-bar .field label { margin-bottom: 0.3rem; }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .pagination-info {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        .btn-disabled {
+            opacity: 0.45;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .scroll-hint {
+            display: none;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin: -0.5rem 0 0.6rem;
+        }
+        @media (max-width: 640px) {
+            .scroll-hint { display: block; }
+        }
+
         .empty {
             text-align: center;
             padding: 2.5rem 1.5rem;
@@ -404,7 +435,6 @@
         }
         .empty p { margin: 0 0 1.25rem; font-size: 0.95rem; }
 
-        /* —— Forms —— */
         .form-page {
             max-width: 32rem;
             margin: 0 auto;
@@ -467,7 +497,6 @@
         }
         .form-actions .btn { min-width: 7rem; }
 
-        /* —— List items (admin recent) —— */
         .list-item {
             display: flex;
             justify-content: space-between;
@@ -480,7 +509,6 @@
         .list-item:last-child { border-bottom: none; }
         .list-item .name { font-weight: 600; color: var(--ink); }
 
-        /* —— Quick links —— */
         .quick-link {
             display: flex;
             align-items: center;
