@@ -9,14 +9,36 @@
     <a class="btn btn-primary" href="{{ route('blood.donor.create') }}">+ New donor</a>
 </div>
 
-@if(($donors ?? collect())->isEmpty())
+<form method="GET" action="{{ route('blood.donors') }}" class="filter-bar">
+    <div class="field">
+        <label for="blood_type">Filter by blood type</label>
+        <select id="blood_type" name="blood_type" onchange="this.form.submit()">
+            <option value="">All types</option>
+            @foreach(['A+','A-','B+','B-','AB+','AB-','O+','O-'] as $t)
+                <option value="{{ $t }}" @selected($bloodType === $t)>{{ $t }}</option>
+            @endforeach
+        </select>
+    </div>
+    @if($bloodType)
+        <a class="btn btn-ghost" href="{{ route('blood.donors') }}">Clear filter</a>
+    @endif
+</form>
+
+@if($donors->isEmpty())
     <div class="card empty">
         <div class="empty-icon">🩸</div>
-        <h3>No donors yet</h3>
-        <p>Be the first to register and help someone in need.</p>
-        <a class="btn btn-primary" href="{{ route('blood.donor.create') }}">Register as a donor</a>
+        @if($bloodType)
+            <h3>No {{ $bloodType }} donors yet</h3>
+            <p>Try a different blood type, or check back later.</p>
+            <a class="btn btn-ghost" href="{{ route('blood.donors') }}">Clear filter</a>
+        @else
+            <h3>No donors yet</h3>
+            <p>Be the first to register and help someone in need.</p>
+            <a class="btn btn-primary" href="{{ route('blood.donor.create') }}">Register as a donor</a>
+        @endif
     </div>
 @else
+    <p class="scroll-hint">Swipe left/right to see more columns &rarr;</p>
     <div class="table-wrap">
         <table>
             <thead>
@@ -47,5 +69,6 @@
             </tbody>
         </table>
     </div>
+    {{ $donors->links('vendor.pagination.custom') }}
 @endif
 @endsection

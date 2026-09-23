@@ -23,7 +23,9 @@ Route::get('/contact', fn () => view('portfolio', ['section' => 'contact']))->na
 
 // Student password admin
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/login', [AdminController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('admin.login.submit');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::middleware('admin')->group(function () {
     Route::get('/admin/students', [AdminController::class, 'students'])->name('admin.students');
@@ -62,9 +64,11 @@ Route::get('/blood/contact-info', [ContactInfoController::class, 'index'])->name
 Route::get('/blood/contact-info/create', [ContactInfoController::class, 'create'])->name('blood.contact-info.create');
 Route::post('/blood/contact-info', [ContactInfoController::class, 'store'])->name('blood.contact-info.store');
 
-Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
-Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
-Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
+Route::middleware('admin')->group(function () {
+    Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
+    Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
+    Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
+});
 
 Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
 Route::get('/operator/{type}', [OperatorController::class, 'showForm'])->name('operator.show');
