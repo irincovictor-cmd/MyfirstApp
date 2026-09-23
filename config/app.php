@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin panel password
+    |--------------------------------------------------------------------------
+    |
+    | Shared password for the simple session-based admin login used by the
+    | Student and BloodLink admin panels. Must be set in .env — there is no
+    | insecure fallback, so login fails closed if it's missing.
+    |
+    */
+    'admin_password' => env('ADMIN_PASSWORD'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
