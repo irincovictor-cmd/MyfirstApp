@@ -29,12 +29,12 @@
     </div>
 </div>
 
-{{-- How it works --}}
+{{-- How it works — all step icons same style --}}
 <h2 class="section-title" style="margin-top:2.25rem;">How it works</h2>
-<p class="section-sub">Three simple steps from form to database.</p>
+<p class="section-sub">Three simple steps from form to match.</p>
 <div class="grid-3">
     <div class="card feature">
-        <div class="feature-icon blood">1</div>
+        <div class="feature-icon">1</div>
         <div>
             <h3>Register</h3>
             <p>Donors and requesters fill out a short form with blood type and contact details.</p>
@@ -56,12 +56,12 @@
     </div>
 </div>
 
-{{-- Quick actions --}}
+{{-- Quick actions — all icons same teal style --}}
 <h2 class="section-title" style="margin-top:2.25rem;">Quick actions</h2>
 <p class="section-sub">Jump to the task you need.</p>
 <div class="grid-2">
     <a class="card quick-link" href="{{ route('blood.donors') }}">
-        <div class="feature-icon blood">🩸</div>
+        <div class="feature-icon">🩸</div>
         <div>
             <strong>Browse donors</strong>
             <span>See who is registered and their blood types</span>
