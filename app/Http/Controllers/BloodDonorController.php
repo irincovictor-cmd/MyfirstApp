@@ -9,11 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class BloodDonorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $donors = BloodDonor::orderByDesc('id')->get();
+        $bloodType = $request->query('blood_type');
 
-        return view('blood-donors.index', compact('donors'));
+        $donors = BloodDonor::query()
+            ->when($bloodType, fn ($q) => $q->where('blood_type', $bloodType))
+            ->orderByDesc('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('blood-donors.index', [
+            'donors' => $donors,
+            'bloodType' => $bloodType,
+        ]);
     }
 
     public function create()

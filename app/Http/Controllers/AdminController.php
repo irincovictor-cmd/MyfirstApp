@@ -21,7 +21,11 @@ class AdminController extends Controller
     {
         $request->validate(['password' => 'required|string']);
 
-        $expected = env('ADMIN_PASSWORD', 'admin123');
+        $expected = config('app.admin_password');
+
+        if (blank($expected)) {
+            abort(500, 'ADMIN_PASSWORD is not configured. Set it in your .env file.');
+        }
 
         if (! hash_equals((string) $expected, (string) $request->password)) {
             return back()
@@ -29,8 +33,8 @@ class AdminController extends Controller
                 ->onlyInput();
         }
 
-        $request->session()->put('admin_logged_in', true);
         $request->session()->regenerate();
+        $request->session()->put('admin_logged_in', true);
 
         return redirect()->route('admin.students')->with('success', 'Logged in.');
     }

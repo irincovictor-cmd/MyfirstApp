@@ -9,11 +9,22 @@ use Illuminate\Support\Facades\Hash;
 
 class RequirerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $requirers = Requirer::orderByDesc('id')->get();
+        $bloodType = $request->query('blood_type');
 
-        return view('blood-request.index', compact('requirers'));
+        $requirers = Requirer::query()
+            ->when($bloodType, fn ($q) => $q->where('blood_type', $bloodType))
+            // Soonest-needed requests first; requests with no date go last.
+            ->orderByRaw('required_date IS NULL, required_date ASC')
+            ->orderByDesc('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('blood-request.index', [
+            'requirers' => $requirers,
+            'bloodType' => $bloodType,
+        ]);
     }
 
     /** Assignment folder: requirers/ */
