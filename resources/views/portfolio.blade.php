@@ -74,32 +74,57 @@
         @endif
 
         @if (($section ?? '') == 'work')
-        <!-- Work Grid Section -->
+        <!-- Work Grid Section — central hub for all projects -->
         <section class="work" id="work">
             <div class="section-head">
                 <h2>Selected work</h2>
-                <p>Projects I've built and continue to improve as a BSIT student.</p>
+                <p>Projects inside this app (click to open) and other work on GitHub.</p>
+            </div>
+
+            <!-- Projects that live inside MyfirstApp -->
+            <div class="grid">
+                <a href="{{ route('blood.home') }}" class="card c1">
+                    <span class="num">01</span>
+                    <h3>Blood Donation System</h3>
+                    <p>Full blood donation platform — donors, requests, contact forms, pages, and admin dashboard. Built with Laravel.</p>
+                </a>
+                <a href="{{ route('student.create') }}" class="card c2">
+                    <span class="num">02</span>
+                    <h3>Student Registration</h3>
+                    <p>Student form and details collection with admin panel to view and manage submissions.</p>
+                </a>
+                <a href="{{ route('operator.index') }}" class="card c3">
+                    <span class="num">03</span>
+                    <h3>Operator / Calculator</h3>
+                    <p>Interactive operator tool — choose an operation and calculate results right in the browser.</p>
+                </a>
+                <a href="{{ route('admin.login') }}" class="card c4">
+                    <span class="num">04</span>
+                    <h3>Admin Login</h3>
+                    <p>Protected admin area for managing students and the blood donation system.</p>
+                </a>
+            </div>
+
+            <!-- Outside projects (GitHub) -->
+            <div class="section-head" style="margin-top: 4rem;">
+                <h2>Other projects</h2>
+                <p>Separate repositories on GitHub.</p>
             </div>
             <div class="grid">
                 <a href="https://github.com/irincovictor-cmd/Finished__Final_webSystem__-2nd-yr-" target="_blank" rel="noopener" class="card c1">
-                    <span class="num">01</span>
+                    <span class="num">05</span>
                     <h3>Final Web System</h3>
                     <p>Complete web system built for Web Development 1 (2nd year). Full PHP-based application developed as a team project.</p>
                 </a>
                 <a href="https://github.com/irincovictor-cmd/whop-toolkit-web" target="_blank" rel="noopener" class="card c2">
-                    <span class="num">02</span>
+                    <span class="num">06</span>
                     <h3>Whop Toolkit (Web)</h3>
                     <p>Web-based toolkit built with TypeScript — tools and utilities for Whop clippers.</p>
                 </a>
                 <a href="https://github.com/irincovictor-cmd/Finals_DSAvisualizer" target="_blank" rel="noopener" class="card c3">
-                    <span class="num">03</span>
+                    <span class="num">07</span>
                     <h3>DSA Visualizer</h3>
                     <p>Data Structures & Algorithms visualizer (Java) — final project for the DSA course.</p>
-                </a>
-                <a href="https://github.com/irincovictor-cmd/MyfirstApp" target="_blank" rel="noopener" class="card c4">
-                    <span class="num">04</span>
-                    <h3>MyfirstApp (Laravel)</h3>
-                    <p>Laravel portfolio site with student form and interactive calculator. My first Laravel project.</p>
                 </a>
             </div>
         </section>
