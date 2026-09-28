@@ -64,11 +64,10 @@ Route::get('/blood/contact-info', [ContactInfoController::class, 'index'])->name
 Route::get('/blood/contact-info/create', [ContactInfoController::class, 'create'])->name('blood.contact-info.create');
 Route::post('/blood/contact-info', [ContactInfoController::class, 'store'])->name('blood.contact-info.store');
 
-Route::middleware('admin')->group(function () {
-    Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
-    Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
-    Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
-});
+// BloodLink admin — open for now (no auth required)
+Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
+Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
+Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
 
 Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
 Route::get('/operator/{type}', [OperatorController::class, 'showForm'])->name('operator.show');
