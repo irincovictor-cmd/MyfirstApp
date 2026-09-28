@@ -6,11 +6,7 @@
         <h1 class="section-title">Admin dashboard</h1>
         <p class="section-sub">Overview of donors, requests, and recent activity.</p>
     </div>
-    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-        <a class="btn btn-ghost" href="{{ route('blood.donors') }}">Donors</a>
-        <a class="btn btn-ghost" href="{{ route('blood.requests') }}">Requests</a>
-        <a class="btn btn-primary" href="{{ route('blood.admin.create') }}">+ Register admin</a>
-    </div>
+    <a class="btn btn-primary" href="{{ route('blood.admin.create') }}">+ Register admin</a>
 </div>
 
 <div class="grid-3">
@@ -35,6 +31,55 @@
     <div class="card">
         <div class="stat">{{ $admins ?? 0 }}</div>
         <div class="stat-label">Admin accounts</div>
+    </div>
+</div>
+
+{{-- Quick actions: admin can actually open / manage things --}}
+<div style="margin-top:1.5rem;">
+    <h3 style="margin:0 0 0.75rem;font-size:1rem;">Quick actions</h3>
+    <div class="grid-2">
+        <a class="card quick-link" href="{{ route('blood.donors') }}">
+            <div class="feature-icon blood">D</div>
+            <div>
+                <strong>View all donors</strong>
+                <span>List and filter registered donors</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.requests') }}">
+            <div class="feature-icon blood">R</div>
+            <div>
+                <strong>View all requests</strong>
+                <span>Blood requests by type and date</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.contact-queries') }}">
+            <div class="feature-icon">M</div>
+            <div>
+                <strong>Contact messages</strong>
+                <span>Messages sent from the contact form</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.pages') }}">
+            <div class="feature-icon">P</div>
+            <div>
+                <strong>Info pages</strong>
+                <span>View or create content pages</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.donor.create') }}">
+            <div class="feature-icon blood">+</div>
+            <div>
+                <strong>Add a donor</strong>
+                <span>Register a new blood donor</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.request.create') }}">
+            <div class="feature-icon blood">+</div>
+            <div>
+                <strong>Add a request</strong>
+                <span>Submit a new blood request</span>
+            </div>
+        </a>
     </div>
 </div>
 
