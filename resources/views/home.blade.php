@@ -3,19 +3,18 @@
 @section('title', 'Home')
 
 @section('content')
-<section class="hero">
-    <div class="hero-content">
-        <div class="hero-kicker">Blood donation network</div>
-        <h1>Give blood. Save lives.</h1>
-        <p>Register as a donor, request blood when needed, and help your community stay prepared.</p>
-        <div class="hero-actions">
-            <a class="btn btn-primary" href="{{ route('blood.donor.create') }}">Become a donor</a>
-            <a class="btn btn-ghost" href="{{ route('blood.request.create') }}" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)">Request blood</a>
-        </div>
+<div class="hero">
+    <div class="hero-kicker">🩸 Community blood network</div>
+    <h1>Give blood. Save lives.</h1>
+    <p>Register as a donor or request blood for someone in need. Every registration helps match donors with hospitals and patients faster.</p>
+    <div class="hero-actions">
+        <a class="btn btn-light" href="{{ route('blood.donor.create') }}">Become a donor</a>
+        <a class="btn btn-outline" href="{{ route('blood.request.create') }}">Request blood</a>
     </div>
-</section>
+</div>
 
-<div class="grid-3" style="margin-top:1.5rem">
+{{-- Live stats --}}
+<div class="grid-3" style="margin-top:1.5rem;">
     <div class="card">
         <div class="stat">{{ $donorCount ?? 0 }}</div>
         <div class="stat-label">Registered donors</div>
@@ -30,32 +29,64 @@
     </div>
 </div>
 
-<div style="margin-top:1.75rem">
-    <h2 class="section-title">Blood types we track</h2>
-    <p class="section-sub">Compatible matching starts with knowing your type.</p>
-    <div class="blood-types" style="display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem">
-        @foreach(['A+','A-','B+','B-','AB+','AB-','O+','O-'] as $type)
-            <div class="blood-type" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem;text-align:center;font-weight:700;color:var(--blood)">{{ $type }}<small style="display:block;color:var(--muted);font-weight:500;margin-top:.25rem">Blood type</small></div>
-        @endforeach
+{{-- How it works — all step icons same style --}}
+<h2 class="section-title" style="margin-top:2.25rem;">How it works</h2>
+<p class="section-sub">Three simple steps from form to match.</p>
+<div class="grid-3">
+    <div class="card feature">
+        <div class="feature-icon">1</div>
+        <div>
+            <h3>Register</h3>
+            <p>Donors and requesters fill out a short form with blood type and contact details.</p>
+        </div>
+    </div>
+    <div class="card feature">
+        <div class="feature-icon">2</div>
+        <div>
+            <h3>We store it</h3>
+            <p>Your data is validated and saved securely so staff can find matches quickly.</p>
+        </div>
+    </div>
+    <div class="card feature">
+        <div class="feature-icon">3</div>
+        <div>
+            <h3>Review & match</h3>
+            <p>Admins review lists and connect donors with open blood requests.</p>
+        </div>
     </div>
 </div>
 
-<div class="grid-2" style="margin-top:1.75rem">
+{{-- Quick actions --}}
+<h2 class="section-title" style="margin-top:2.25rem;">Quick actions</h2>
+<p class="section-sub">Jump to the task you need.</p>
+<div class="grid-2">
     <a class="card quick-link" href="{{ route('blood.donors') }}">
-        <strong>Browse donors</strong>
-        <span>See who is registered and filter by blood type</span>
+        <div class="feature-icon">🩸</div>
+        <div>
+            <strong>Browse donors</strong>
+            <span>See who is registered and their blood types</span>
+        </div>
     </a>
     <a class="card quick-link" href="{{ route('blood.requests') }}">
-        <strong>View requests</strong>
-        <span>Open blood needs sorted by date</span>
+        <div class="feature-icon">📋</div>
+        <div>
+            <strong>View requests</strong>
+            <span>Open blood needs from hospitals and patients</span>
+        </div>
     </a>
     <a class="card quick-link" href="{{ route('blood.contact') }}">
-        <strong>Contact us</strong>
-        <span>Questions about donating or requesting</span>
+        <div class="feature-icon">✉️</div>
+        <div>
+            <strong>Contact us</strong>
+            <span>Send a question or message to the team</span>
+        </div>
     </a>
-    <a class="card quick-link" href="{{ route('blood.pages') }}">
-        <strong>Info pages</strong>
-        <span>Guides and system notes</span>
+    <a class="card quick-link" href="{{ route('blood.admin.dashboard') }}">
+        <div class="feature-icon">⚙️</div>
+        <div>
+            <strong>Admin dashboard</strong>
+            <span>Counts, recent activity, and management</span>
+        </div>
     </a>
 </div>
 @endsection
