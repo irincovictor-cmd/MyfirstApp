@@ -98,10 +98,10 @@
                     <h3>Operator / Calculator</h3>
                     <p>Interactive operator tool — choose an operation and calculate results right in the browser.</p>
                 </a>
-                <a href="{{ route('admin.login') }}" class="card c4">
+                <a href="{{ route('blood.admin.dashboard') }}" class="card c4">
                     <span class="num">04</span>
-                    <h3>Admin Login</h3>
-                    <p>Protected admin area for managing students and the blood donation system.</p>
+                    <h3>BloodLink Admin</h3>
+                    <p>Admin dashboard for the blood donation system — manage donors, requests, and activity.</p>
                 </a>
             </div>
 
@@ -198,10 +198,10 @@
             <p style="margin-top: 0.5rem; opacity: 0.8;">Tawala, Panglao, Bohol</p>
         </div>
         <div class="socials">
-            <a href="https://www.instagram.com/irincovictorjames?igsh=MTNqaHV3ZXE2c28xcQ==" target="_blank" rel="noopener">Instagram</a>
-            <a href="https://www.facebook.com/share/1HpXzsaixM/" target="_blank" rel="noopener">Facebook</a>
             <a href="https://www.linkedin.com/in/victorjames-irinco-84696936b/" target="_blank" rel="noopener">LinkedIn</a>
             <a href="https://github.com/irincovictor-cmd" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.instagram.com/irincovictorjames?igsh=MTNqaHV3ZXE2c28xcQ==" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.facebook.com/share/1HpXzsaixM/" target="_blank" rel="noopener">Facebook</a>
         </div>
     </footer>
 
