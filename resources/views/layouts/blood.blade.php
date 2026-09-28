@@ -24,7 +24,7 @@
             --ok-soft: #ecfdf5;
             --warn: #a16207;
             --warn-soft: #fef9c3;
-            --topbar: #1a1214;
+            --topbar: #7f1d1d;
             --radius: 1rem;
             --font: "Outfit", system-ui, sans-serif;
             --display: "Fraunces", Georgia, serif;
