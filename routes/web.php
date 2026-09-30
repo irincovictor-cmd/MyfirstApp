@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BloodAdminController;
 use App\Http\Controllers\BloodAuthController;
 use App\Http\Controllers\BloodDonorController;
@@ -22,18 +21,7 @@ Route::get('/work', fn () => view('portfolio', ['section' => 'work']))->name('wo
 Route::get('/about', fn () => view('portfolio', ['section' => 'about']))->name('about');
 Route::get('/contact', fn () => view('portfolio', ['section' => 'contact']))->name('contact');
 
-// Student password admin
-Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])
-    ->middleware('throttle:5,1')
-    ->name('admin.login.submit');
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-Route::middleware('admin')->group(function () {
-    Route::get('/admin/students', [AdminController::class, 'students'])->name('admin.students');
-    Route::get('/admin', [AdminController::class, 'students'])->name('admin.index');
-    Route::delete('/admin/students/{student}', [AdminController::class, 'destroy'])->name('admin.students.destroy');
-});
-
+// Student forms (no separate admin panel)
 Route::get('/student', [StudentController::class, 'create'])->name('student.create');
 Route::post('/student', [StudentController::class, 'store'])->name('student.store');
 Route::get('/student-details', [StudentDetailController::class, 'create'])->name('student-details.create');
@@ -81,7 +69,7 @@ Route::middleware('blood.user')->group(function () {
     Route::get('/blood/requirers/create', [RequirerController::class, 'requirersCreate'])->name('blood.requirer.create');
 });
 
-// Admin power only
+// Admin power only (BloodLink)
 Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
