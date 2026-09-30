@@ -1,54 +1,53 @@
 @extends('layouts.blood')
-@section('title', 'Blood Requests')
+@section('title', 'Requests')
 @section('content')
+
 <div class="head-row">
     <div>
-        <h1 class="section-title">Blood requests</h1>
-        <p class="section-sub">Open needs from patients and hospitals, soonest-needed first.</p>
+        <h1 class="section-title">📋 Requests</h1>
+        <p class="section-sub">Blood needs</p>
     </div>
-    <a class="btn btn-primary" href="{{ route('blood.request.create') }}">+ New request</a>
+    <a class="btn btn-primary" href="{{ route('blood.request.create') }}">+ Request</a>
 </div>
 
 <form method="GET" action="{{ route('blood.requests') }}" class="filter-bar">
     <div class="field">
-        <label for="blood_type">Filter by blood type</label>
+        <label for="blood_type">Blood type</label>
         <select id="blood_type" name="blood_type" onchange="this.form.submit()">
-            <option value="">All types</option>
+            <option value="">All</option>
             @foreach(['A+','A-','B+','B-','AB+','AB-','O+','O-'] as $t)
-                <option value="{{ $t }}" @selected($bloodType === $t)>{{ $t }}</option>
+                <option value="{{ $t }}" @selected(($bloodType ?? '') === $t)>{{ $t }}</option>
             @endforeach
         </select>
     </div>
-    @if($bloodType)
-        <a class="btn btn-ghost" href="{{ route('blood.requests') }}">Clear filter</a>
+    @if(!empty($bloodType))
+        <a class="btn btn-ghost" href="{{ route('blood.requests') }}">Clear</a>
     @endif
 </form>
 
 @if($requirers->isEmpty())
     <div class="card empty">
         <div class="empty-icon">📋</div>
-        @if($bloodType)
-            <h3>No {{ $bloodType }} requests yet</h3>
-            <p>Try a different blood type, or check back later.</p>
-            <a class="btn btn-ghost" href="{{ route('blood.requests') }}">Clear filter</a>
+        <h3>{{ !empty($bloodType) ? 'No '.$bloodType.' requests' : 'No requests' }}</h3>
+        <p>{{ !empty($bloodType) ? 'Try another type.' : 'Add the first one.' }}</p>
+        @if(!empty($bloodType))
+            <a class="btn btn-ghost" href="{{ route('blood.requests') }}">Clear</a>
         @else
-            <h3>No blood requests yet</h3>
-            <p>When someone needs blood, their request will appear here.</p>
-            <a class="btn btn-primary" href="{{ route('blood.request.create') }}">Submit a request</a>
+            <a class="btn btn-primary" href="{{ route('blood.request.create') }}">+ Request</a>
         @endif
     </div>
 @else
-    <p class="scroll-hint">Swipe left/right to see more columns &rarr;</p>
+    <p class="scroll-hint">Swipe for more columns →</p>
     <div class="table-wrap">
         <table>
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Blood</th>
+                    <th>Type</th>
                     <th>Units</th>
                     <th>Hospital</th>
-                    <th>Needed by</th>
+                    <th>Needed</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -69,7 +68,7 @@
                         <td>
                             {{ $r->required_date ?? '—' }}
                             @if($isUrgent)
-                                <span class="status status-urgent" style="margin-left:0.35rem;">Urgent</span>
+                                <span class="badge" style="margin-left:0.25rem;">Urgent</span>
                             @endif
                         </td>
                         <td>
@@ -84,4 +83,5 @@
     </div>
     {{ $requirers->links('vendor.pagination.custom') }}
 @endif
+
 @endsection
