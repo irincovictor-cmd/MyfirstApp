@@ -4,19 +4,24 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Admin power: only blood admin session may pass.
- */
+/** Only users with role = admin. */
 class EnsureBloodAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->session()->get('blood_admin_id')) {
+        if (! Auth::check()) {
             return redirect()
                 ->route('blood.login')
-                ->with('error', 'Admin access only. Please log in with an admin account.');
+                ->with('error', 'Please log in as admin.');
+        }
+
+        if (! Auth::user()->isAdmin()) {
+            return redirect()
+                ->route('blood.home')
+                ->with('error', 'Admin access only.');
         }
 
         return $next($request);
