@@ -6,15 +6,27 @@
         <h1 class="section-title">Info pages</h1>
         <p class="section-sub">Content pages managed for the blood donation site.</p>
     </div>
-    <a class="btn btn-primary" href="{{ route('blood.page.create') }}">+ New page</a>
+    @auth
+        @if(auth()->user()->role === 'admin')
+            <a class="btn btn-primary" href="{{ route('blood.page.create') }}" style="padding: 0.55rem 1rem; font-size: 0.88rem;">
+                + New page
+            </a>
+        @endif
+    @endauth
 </div>
 
 @if(($pages ?? collect())->isEmpty())
-    <div class="card empty">
-        <div class="empty-icon">📄</div>
-        <h3>No pages yet</h3>
-        <p>Create an about, FAQ, or guidelines page for visitors.</p>
-        <a class="btn btn-primary" href="{{ route('blood.page.create') }}">Create a page</a>
+    <div class="card" style="text-align: center; padding: 2rem 1.5rem;">
+        <p style="font-size: 1.75rem; margin: 0 0 0.5rem;">📄</p>
+        <h3 style="margin: 0 0 0.4rem;">No pages yet</h3>
+        <p style="color: var(--muted); margin: 0 0 1rem;">Create an about, FAQ, or guidelines page for visitors.</p>
+        @auth
+            @if(auth()->user()->role === 'admin')
+                <a class="btn btn-primary" href="{{ route('blood.page.create') }}" style="padding: 0.55rem 1rem; font-size: 0.88rem;">
+                    Create a page
+                </a>
+            @endif
+        @endauth
     </div>
 @else
     <div class="grid-3">
