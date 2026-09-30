@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Cohesive blood / medical palette */
             --ink: #1c1917;
             --muted: #78716c;
             --bg: #faf7f5;
@@ -89,8 +88,9 @@
             flex-wrap: wrap;
             gap: 0.15rem;
             justify-content: flex-end;
+            align-items: center;
         }
-        .nav a {
+        .nav a, .nav button.linkish {
             text-decoration: none;
             color: #a8a29e;
             padding: 0.4rem 0.7rem;
@@ -98,8 +98,12 @@
             font-size: 0.88rem;
             font-weight: 500;
             transition: background 0.15s, color 0.15s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
-        .nav a:hover { background: rgba(255, 255, 255, 0.06); color: #faf7f5; }
+        .nav a:hover, .nav button.linkish:hover { background: rgba(255, 255, 255, 0.06); color: #faf7f5; }
         .nav a.active {
             background: rgba(196, 30, 58, 0.2);
             color: #fda4af;
@@ -112,6 +116,11 @@
             box-shadow: 0 2px 8px rgba(196, 30, 58, 0.35);
         }
         .nav .btn-admin:hover { background: var(--primary-dark); }
+        .nav .who {
+            color: #d6d3d1;
+            font-size: 0.8rem;
+            padding: 0.35rem 0.5rem;
+        }
 
         .wrap {
             max-width: 1080px;
@@ -129,17 +138,12 @@
             border-radius: 0.75rem;
             margin-bottom: 1.25rem;
             font-weight: 500;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
         }
-        .alert::before { content: "✓"; font-weight: 700; }
         .alert-error {
             background: #fef2f2;
             color: #9f1239;
             border-color: #fecdd3;
         }
-        .alert-error::before { content: "!"; }
 
         .hero {
             background: linear-gradient(145deg, #1a1214 0%, #3f1219 55%, #c41e3a 100%);
@@ -150,37 +154,13 @@
             position: relative;
             overflow: hidden;
         }
-        .hero::before {
-            content: "";
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            top: -100px;
-            right: -80px;
-        }
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: rgba(196, 30, 58, 0.35);
-            bottom: -60px;
-            left: 10%;
-        }
         .hero-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             font-size: 0.72rem;
             font-weight: 600;
             color: #fda4af;
             margin-bottom: 0.75rem;
-            position: relative;
         }
         .hero h1 {
             font-family: var(--display);
@@ -189,22 +169,9 @@
             line-height: 1.15;
             color: #fff;
             max-width: 16ch;
-            position: relative;
         }
-        .hero p {
-            max-width: 34rem;
-            margin: 0;
-            color: #e7e0dc;
-            font-size: 1.02rem;
-            position: relative;
-        }
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.65rem;
-            margin-top: 1.5rem;
-            position: relative;
-        }
+        .hero p { max-width: 34rem; margin: 0; color: #e7e0dc; font-size: 1.02rem; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.5rem; }
 
         .btn {
             display: inline-flex;
@@ -219,71 +186,18 @@
             cursor: pointer;
             font-family: inherit;
             font-size: 0.92rem;
-            transition: transform 0.12s, background 0.15s, box-shadow 0.15s;
         }
-        .btn:active { transform: scale(0.98); }
-        .btn-light {
-            background: #fff;
-            color: var(--ink);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .btn-light:hover { background: #faf7f5; }
-        .btn-outline {
-            background: transparent;
-            color: #fff;
-            box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.55);
-        }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); }
-        .btn-primary {
-            background: var(--blood);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(196, 30, 58, 0.35);
-        }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-teal {
-            background: var(--primary);
-            color: #fff;
-        }
-        .btn-teal:hover { background: var(--primary-dark); }
-        .btn-ghost {
-            background: #fff;
-            color: var(--ink);
-            box-shadow: inset 0 0 0 1px var(--line);
-        }
-        .btn-ghost:hover { background: #faf7f5; border-color: #d6cbc6; }
+        .btn-light { background: #fff; color: var(--ink); }
+        .btn-outline { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.55); }
+        .btn-primary { background: var(--blood); color: #fff; }
+        .btn-ghost { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 
-        .section-title {
-            font-family: var(--display);
-            font-size: 1.5rem;
-            margin: 0 0 0.3rem;
-            color: var(--ink);
-            letter-spacing: -0.02em;
-        }
-        .section-sub {
-            color: var(--muted);
-            margin: 0 0 1.25rem;
-            font-size: 0.95rem;
-        }
-        .head-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.25rem;
-        }
-        .head-row .section-title { margin-bottom: 0.2rem; }
-        .head-row .section-sub { margin-bottom: 0; }
+        .section-title { font-family: var(--display); font-size: 1.5rem; margin: 0 0 0.3rem; color: var(--ink); }
+        .section-sub { color: var(--muted); margin: 0 0 1.25rem; font-size: 0.95rem; }
+        .head-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
 
-        .grid-3 {
-            display: grid;
-            gap: 1rem;
-            grid-template-columns: 1fr;
-        }
-        .grid-2 {
-            display: grid;
-            gap: 1rem;
-        }
+        .grid-3 { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+        .grid-2 { display: grid; gap: 1rem; }
         @media (min-width: 640px) {
             .grid-3 { grid-template-columns: repeat(3, 1fr); }
             .grid-2 { grid-template-columns: 1fr 1fr; }
@@ -295,80 +209,12 @@
             padding: 1.25rem 1.3rem;
             box-shadow: var(--shadow);
         }
-        .card h3 {
-            margin: 0 0 0.35rem;
-            font-size: 1.02rem;
-            color: var(--ink);
-        }
-        .card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-        .stat {
-            font-size: 1.85rem;
-            font-weight: 700;
-            color: var(--ink);
-            letter-spacing: -0.03em;
-            line-height: 1.2;
-        }
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--muted);
-            font-weight: 500;
-            margin-top: 0.15rem;
-        }
+        .stat { font-size: 1.85rem; font-weight: 700; color: var(--ink); }
 
-        .feature {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-        .feature-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: var(--primary-soft);
-            color: var(--primary-dark);
-            display: grid;
-            place-items: center;
-            font-weight: 700;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-        .feature-icon.blood {
-            background: var(--blood-soft);
-            color: var(--blood);
-        }
-
-        .table-wrap {
-            overflow-x: auto;
-            border-radius: var(--radius);
-            border: 1px solid var(--line);
-            background: var(--card);
-            box-shadow: var(--shadow);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-        th, td {
-            text-align: left;
-            padding: 0.85rem 1rem;
-            border-bottom: 1px solid var(--line);
-            color: var(--ink);
-        }
-        th {
-            color: var(--muted);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-            background: #faf7f5;
-        }
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover td { background: #faf7f5; }
+        .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); }
+        th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; background: #faf7f5; }
 
         .badge {
             display: inline-block;
@@ -379,84 +225,8 @@
             font-size: 0.78rem;
             font-weight: 600;
         }
-        .status {
-            display: inline-block;
-            padding: 0.2rem 0.55rem;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: capitalize;
-        }
-        .status-pending { background: var(--warn-soft); color: var(--warn); }
-        .status-approved, .status-active, .status-resolved {
-            background: var(--ok-soft); color: var(--ok);
-        }
-        .status-rejected, .status-closed {
-            background: #fef2f2; color: #9f1239;
-        }
-        .status-urgent {
-            background: #c41e3a; color: #fff;
-        }
 
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        .filter-bar .field { margin-bottom: 0; min-width: 10rem; }
-        .filter-bar .field label { margin-bottom: 0.3rem; }
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.25rem;
-            flex-wrap: wrap;
-        }
-        .pagination-info {
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
-        .btn-disabled {
-            opacity: 0.45;
-            cursor: default;
-            pointer-events: none;
-        }
-
-        .scroll-hint {
-            display: none;
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin: -0.5rem 0 0.6rem;
-        }
-        @media (max-width: 640px) {
-            .scroll-hint { display: block; }
-        }
-
-        .empty {
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-            color: var(--muted);
-        }
-        .empty-icon {
-            font-size: 2.25rem;
-            margin-bottom: 0.75rem;
-            opacity: 0.7;
-        }
-        .empty h3 {
-            margin: 0 0 0.4rem;
-            color: var(--ink);
-            font-size: 1.1rem;
-        }
-        .empty p { margin: 0 0 1.25rem; font-size: 0.95rem; }
-
-        .form-page {
-            max-width: 32rem;
-            margin: 0 auto;
-        }
+        .form-page { max-width: 32rem; margin: 0 auto; }
         .form-page .section-title,
         .form-page .section-sub { text-align: center; }
         .form-card {
@@ -468,28 +238,8 @@
             box-shadow: var(--shadow-lg);
         }
         .field { margin-bottom: 1rem; }
-        .field:last-of-type { margin-bottom: 0; }
-        label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 0.35rem;
-            color: var(--ink);
-        }
-        .hint {
-            font-size: 0.8rem;
-            color: var(--muted);
-            font-weight: 400;
-            margin-top: 0.25rem;
-        }
-        .row-2 {
-            display: grid;
-            gap: 0.85rem;
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 480px) {
-            .row-2 { grid-template-columns: 1fr 1fr; }
-        }
+        label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; }
+        .hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
         input, select, textarea {
             width: 100%;
             padding: 0.72rem 0.9rem;
@@ -498,62 +248,13 @@
             background: #fff;
             font-family: inherit;
             font-size: 0.95rem;
-            color: var(--ink);
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        input:hover, select:hover, textarea:hover {
-            border-color: #d6cbc6;
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.18);
         }
-        textarea { resize: vertical; min-height: 110px; }
-        .form-actions {
-            margin-top: 1.35rem;
-            display: flex;
-            gap: 0.55rem;
-            flex-wrap: wrap;
-        }
-        .form-actions .btn { min-width: 7rem; }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.65rem 0;
-            border-bottom: 1px solid var(--line);
-            font-size: 0.92rem;
-        }
-        .list-item:last-child { border-bottom: none; }
-        .list-item .name { font-weight: 600; color: var(--ink); }
-
-        .quick-link {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            padding: 1rem 1.15rem;
-            text-decoration: none;
-            transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
-        }
-        .quick-link:hover {
-            border-color: #f0b4bc;
-            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.12);
-            transform: translateY(-1px);
-        }
-        .quick-link strong {
-            display: block;
-            color: var(--ink);
-            font-size: 0.98rem;
-        }
-        .quick-link span {
-            display: block;
-            color: var(--muted);
-            font-size: 0.85rem;
-            margin-top: 0.15rem;
-        }
+        .form-actions { margin-top: 1.35rem; display: flex; gap: 0.55rem; flex-wrap: wrap; }
 
         footer {
             max-width: 1080px;
@@ -563,23 +264,20 @@
             font-size: 0.82rem;
             width: 100%;
         }
-
-        code {
-            font-size: 0.85em;
-            background: #e7e0dc;
-            color: var(--ink);
-            padding: 0.1em 0.35em;
-            border-radius: 0.3em;
-        }
+        code { font-size: 0.85em; background: #e7e0dc; padding: 0.1em 0.35em; border-radius: 0.3em; }
 
         @media (max-width: 640px) {
             .topbar-inner { flex-direction: column; align-items: flex-start; }
             .nav { width: 100%; }
-            .hero { padding: 2rem 1.35rem; }
         }
     </style>
 </head>
 <body>
+@php
+    $isBloodAdmin = session('blood_admin_id');
+    $isBloodUser = session('blood_user_id');
+    $displayName = session('blood_admin_name') ?: session('blood_user_name');
+@endphp
 <header class="topbar">
     <div class="topbar-inner">
         <a class="brand" href="{{ route('blood.home') }}">
@@ -588,11 +286,29 @@
         </a>
         <ul class="nav">
             <li><a href="{{ route('blood.home') }}" class="{{ request()->routeIs('blood.home') ? 'active' : '' }}">Home</a></li>
-            <li><a href="{{ route('blood.donors') }}" class="{{ request()->routeIs('blood.donors*') ? 'active' : '' }}">Donors</a></li>
-            <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests*') ? 'active' : '' }}">Requests</a></li>
+            @if($isBloodUser || $isBloodAdmin)
+                <li><a href="{{ route('blood.donors') }}" class="{{ request()->routeIs('blood.donors*') ? 'active' : '' }}">Donors</a></li>
+                <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests*') ? 'active' : '' }}">Requests</a></li>
+            @endif
             <li><a href="{{ route('blood.contact') }}" class="{{ request()->routeIs('blood.contact') ? 'active' : '' }}">Contact</a></li>
             <li><a href="{{ route('blood.pages') }}" class="{{ request()->routeIs('blood.pages*') ? 'active' : '' }}">Pages</a></li>
-            <li><a class="btn-admin" href="{{ route('blood.admin.dashboard') }}">Admin</a></li>
+
+            @if($isBloodAdmin)
+                <li><a class="btn-admin" href="{{ route('blood.admin.dashboard') }}">Admin</a></li>
+            @endif
+
+            @if($displayName)
+                <li><span class="who">{{ $isBloodAdmin ? 'Admin' : 'User' }}: {{ $displayName }}</span></li>
+                <li>
+                    <form action="{{ route('blood.logout') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="linkish">Log out</button>
+                    </form>
+                </li>
+            @else
+                <li><a href="{{ route('blood.login') }}">Log in</a></li>
+                <li><a href="{{ route('blood.register') }}">Register</a></li>
+            @endif
         </ul>
     </div>
 </header>
@@ -601,20 +317,21 @@
     @if(session('success'))
         <div class="alert">{{ session('success') }}</div>
     @endif
+    @if(session('error'))
+        <div class="alert alert-error">{{ session('error') }}</div>
+    @endif
     @if(isset($errors) && $errors->any())
         <div class="alert alert-error">
-            <div>
-                <ul style="margin:0;padding-left:1.1rem;">
-                    @foreach($errors->all() as $e)
-                        <li>{{ $e }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            <ul style="margin:0;padding-left:1.1rem;">
+                @foreach($errors->all() as $e)
+                    <li>{{ $e }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
     @yield('content')
 </div>
 
-<footer>BloodLink · blood donation management</footer>
+<footer>BloodLink · user & admin accounts with middleware</footer>
 </body>
 </html>
