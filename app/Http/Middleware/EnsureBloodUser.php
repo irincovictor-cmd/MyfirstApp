@@ -4,22 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * User power: logged-in blood user OR blood admin may pass.
- */
+/** Any logged-in user (role user or admin). */
 class EnsureBloodUser
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $isUser = $request->session()->get('blood_user_id');
-        $isAdmin = $request->session()->get('blood_admin_id');
-
-        if (! $isUser && ! $isAdmin) {
+        if (! Auth::check()) {
             return redirect()
                 ->route('blood.login')
-                ->with('error', 'Please log in as a user to continue.');
+                ->with('error', 'Please log in to continue.');
         }
 
         return $next($request);
