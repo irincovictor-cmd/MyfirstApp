@@ -2,21 +2,17 @@
 @section('title', 'Login')
 @section('content')
 <div class="form-page">
-    <h1 class="section-title">Log in</h1>
-    <p class="section-sub">Choose <strong>User</strong> for donors/requests, or <strong>Admin</strong> for the dashboard.</p>
-
-    @if(session('error'))
-        <div class="alert alert-error" style="text-align:left;max-width:28rem;margin:0 auto 1rem;">{{ session('error') }}</div>
-    @endif
+    <h1 class="section-title">🔐 Login</h1>
+    <p class="section-sub">User or Admin</p>
 
     <div class="form-card">
         <form method="POST" action="{{ route('blood.login.submit') }}">
             @csrf
             <div class="field">
-                <label>Account type</label>
+                <label>Type</label>
                 <select name="role" required>
-                    <option value="user" @selected(old('role', 'user') === 'user')>User (donor / request)</option>
-                    <option value="admin" @selected(old('role') === 'admin')>Admin (dashboard)</option>
+                    <option value="user" @selected(old('role', 'user') === 'user')>User</option>
+                    <option value="admin" @selected(old('role') === 'admin')>Admin</option>
                 </select>
             </div>
             <div class="field">
@@ -28,14 +24,12 @@
                 <input type="password" name="password" required autocomplete="current-password">
             </div>
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Log in</button>
-                <a href="{{ route('blood.register') }}" class="btn btn-ghost">Create user account</a>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a href="{{ route('blood.register') }}" class="btn btn-ghost">Register</a>
             </div>
         </form>
-        <p class="hint" style="margin-top:1rem;">
-            First admin? Register one at Admin → after logging in with an existing admin,
-            or create via <code>/blood/admin/register</code> once an admin session exists.
-            Default seed (if empty): run the seeder or register the first admin from the terminal notes.
+        <p class="hint" style="margin-top:0.85rem;">
+            First admin? Open <code>/blood/setup-admin</code>
         </p>
     </div>
 </div>
