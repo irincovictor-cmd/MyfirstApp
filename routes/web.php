@@ -56,6 +56,12 @@ Route::post('/blood/register', [BloodAuthController::class, 'register'])
     ->name('blood.register.submit');
 Route::post('/blood/logout', [BloodAuthController::class, 'logout'])->name('blood.logout');
 
+// Bootstrap first admin (only works when tbladmin is empty)
+Route::get('/blood/setup-admin', [BloodAdminController::class, 'setupForm'])->name('blood.setup');
+Route::post('/blood/setup-admin', [BloodAdminController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('blood.setup.submit');
+
 // Public read: pages list & contact form
 Route::get('/blood/pages', [BloodPageController::class, 'index'])->name('blood.pages');
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
