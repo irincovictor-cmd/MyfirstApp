@@ -7,7 +7,9 @@ use App\Models\BloodDonor;
 use App\Models\ContactUsQuery;
 use App\Models\Page;
 use App\Models\Requirer;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class BloodAdminController extends Controller
@@ -15,7 +17,7 @@ class BloodAdminController extends Controller
     public function dashboard()
     {
         return view('admin.index', [
-            'admins' => Admin::count(),
+            'admins' => User::where('role', 'admin')->count(),
             'donors' => BloodDonor::count(),
             'requests' => Requirer::count(),
             'messages' => ContactUsQuery::count(),
@@ -31,12 +33,9 @@ class BloodAdminController extends Controller
         return view('admin.create');
     }
 
-    /**
-     * Public only when there is NO admin yet (bootstrap first admin).
-     */
     public function setupForm()
     {
-        if (Admin::count() > 0) {
+        if (User::where('role', 'admin')->exists()) {
             return redirect()->route('blood.login')
                 ->with('error', 'An admin already exists. Log in as admin.');
         }
@@ -46,27 +45,38 @@ class BloodAdminController extends Controller
 
     public function store(Request $request)
     {
-        $isSetup = Admin::count() === 0;
+        $isSetup = ! User::where('role', 'admin')->exists();
 
-        // If admins exist, only logged-in blood admin may create more
-        if (! $isSetup && ! $request->session()->get('blood_admin_id')) {
+        if (! $isSetup && (! Auth::check() || ! Auth::user()->isAdmin())) {
             return redirect()->route('blood.login')
                 ->with('error', 'Admin access required.');
         }
 
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:tbladmin,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:4',
         ]);
 
-        $data['password'] = Hash::make($data['password']);
-        $admin = Admin::create($data);
+        $email = strtolower(trim($data['email']));
 
-        // Auto-login after first setup or when creating while logged in
-        $request->session()->forget(['blood_user_id', 'blood_user_name']);
-        $request->session()->put('blood_admin_id', $admin->id);
-        $request->session()->put('blood_admin_name', $admin->name);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $email,
+            'password' => $data['password'],
+            'role' => 'admin',
+        ]);
+
+        // Mirror into tbladmin for ERD assignment table
+        if (! Admin::where('email', $email)->exists()) {
+            Admin::create([
+                'name' => $data['name'],
+                'email' => $email,
+                'password' => Hash::make($data['password']),
+            ]);
+        }
+
+        Auth::login($user);
         $request->session()->regenerate();
 
         return redirect()
