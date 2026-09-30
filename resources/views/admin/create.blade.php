@@ -1,12 +1,16 @@
 @extends('layouts.blood')
-@section('title', 'Register Admin')
+@section('title', isset($setup) && $setup ? 'Setup Admin' : 'Register Admin')
 @section('content')
 <div class="form-page">
-    <h1 class="section-title">Register admin</h1>
-    <p class="section-sub">Create an admin account for managing the blood donation system.</p>
+    <h1 class="section-title">{{ isset($setup) && $setup ? 'Create first admin' : 'Register admin' }}</h1>
+    <p class="section-sub">
+        {{ isset($setup) && $setup
+            ? 'No admin exists yet. Create the first admin account for BloodLink.'
+            : 'Create another admin account for managing the blood donation system.' }}
+    </p>
 
     <div class="form-card">
-        <form method="POST" action="{{ route('blood.admin.store') }}">
+        <form method="POST" action="{{ isset($setup) && $setup ? route('blood.setup.submit') : route('blood.admin.store') }}">
             @csrf
 
             <div class="field">
@@ -26,8 +30,12 @@
             </div>
 
             <div class="form-actions">
-                <button class="btn btn-primary" type="submit">Create admin</button>
-                <a class="btn btn-ghost" href="{{ route('blood.admin.dashboard') }}">Cancel</a>
+                <button class="btn btn-primary" type="submit">{{ isset($setup) && $setup ? 'Create & log in' : 'Create admin' }}</button>
+                @unless(isset($setup) && $setup)
+                    <a class="btn btn-ghost" href="{{ route('blood.admin.dashboard') }}">Cancel</a>
+                @else
+                    <a class="btn btn-ghost" href="{{ route('blood.login') }}">Back to login</a>
+                @endunless
             </div>
         </form>
     </div>
