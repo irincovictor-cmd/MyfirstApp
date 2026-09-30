@@ -2,8 +2,8 @@
 @section('title', 'Register')
 @section('content')
 <div class="form-page">
-    <h1 class="section-title">Create user account</h1>
-    <p class="section-sub">Regular users can become donors and submit blood requests.</p>
+    <h1 class="section-title">📝 Register</h1>
+    <p class="section-sub">User account</p>
 
     <div class="form-card">
         <form method="POST" action="{{ route('blood.register.submit') }}">
@@ -26,7 +26,7 @@
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Register</button>
-                <a href="{{ route('blood.login') }}" class="btn btn-ghost">Already have an account?</a>
+                <a href="{{ route('blood.login') }}" class="btn btn-ghost">Login</a>
             </div>
         </form>
     </div>
