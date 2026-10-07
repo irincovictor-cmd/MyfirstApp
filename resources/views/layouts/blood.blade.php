@@ -429,10 +429,13 @@
         <ul class="nav">
             <li><a href="{{ route('blood.home') }}" class="{{ request()->routeIs('blood.home') ? 'active' : '' }}">Home</a></li>
             @auth
-                <li><a href="{{ route('blood.donors') }}" class="{{ request()->routeIs('blood.donors*') ? 'active' : '' }}">Donors</a></li>
-                {{-- Requests: admin only --}}
+                {{-- Users: forms only. Admins: lists + forms --}}
                 @if(auth()->user()->isAdmin())
-                    <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests*') ? 'active' : '' }}">Requests</a></li>
+                    <li><a href="{{ route('blood.donors') }}" class="{{ request()->routeIs('blood.donors') ? 'active' : '' }}">Donors</a></li>
+                    <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests') ? 'active' : '' }}">Requests</a></li>
+                @else
+                    <li><a href="{{ route('blood.donor.create') }}" class="{{ request()->routeIs('blood.donor.create') ? 'active' : '' }}">Donate</a></li>
+                    <li><a href="{{ route('blood.request.create') }}" class="{{ request()->routeIs('blood.request.create') ? 'active' : '' }}">Request</a></li>
                 @endif
             @endauth
             <li><a href="{{ route('blood.contact') }}" class="{{ request()->routeIs('blood.contact') ? 'active' : '' }}">Contact</a></li>
