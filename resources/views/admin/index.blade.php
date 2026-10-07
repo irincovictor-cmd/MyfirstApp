@@ -7,7 +7,10 @@
         <h1 class="section-title">⚙️ Admin</h1>
         <p class="section-sub">Dashboard</p>
     </div>
-    <a class="btn btn-primary" href="{{ route('blood.admin.create') }}">+ Admin</a>
+    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <a class="btn btn-ghost" href="{{ route('blood.admin.users') }}">👤 Accounts</a>
+        <a class="btn btn-primary" href="{{ route('blood.admin.create') }}">+ Admin</a>
+    </div>
 </div>
 
 <div class="grid-5">
@@ -28,13 +31,14 @@
         <div class="stat-label">📄 Pages</div>
     </div>
     <div class="stat-card tone-purple">
-        <div class="stat">{{ $admins ?? 0 }}</div>
-        <div class="stat-label">👤 Admins</div>
+        <div class="stat">{{ ($users ?? 0) + ($admins ?? 0) }}</div>
+        <div class="stat-label">👤 Accounts</div>
     </div>
 </div>
 
 <p class="section-sub" style="margin:0.9rem 0 0.4rem;">Actions</p>
 <div class="action-row">
+    <a class="action-chip" href="{{ route('blood.admin.users') }}">👤 Manage users</a>
     <a class="action-chip" href="{{ route('blood.donors') }}">🩸 Manage donors</a>
     <a class="action-chip" href="{{ route('blood.requests') }}">📋 Manage requests</a>
     <a class="action-chip" href="{{ route('blood.contact-queries') }}">✉️ Messages</a>
