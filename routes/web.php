@@ -50,10 +50,11 @@ Route::post('/blood/setup-admin', [BloodAdminController::class, 'store'])
     ->name('blood.setup.submit');
 
 Route::get('/blood/pages', [BloodPageController::class, 'index'])->name('blood.pages');
+Route::get('/blood/pages/{page}', [BloodPageController::class, 'show'])->name('blood.page.show');
+
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
 Route::post('/blood/contact', [ContactUsQueryController::class, 'store'])->name('blood.contact.store');
 
-// User + admin: view/create donors & requests
 Route::middleware('blood.user')->group(function () {
     Route::get('/blood/donors', [BloodDonorController::class, 'index'])->name('blood.donors');
     Route::get('/blood/donors/create', [BloodDonorController::class, 'create'])->name('blood.donor.create');
@@ -67,7 +68,6 @@ Route::middleware('blood.user')->group(function () {
     Route::get('/blood/requirers/create', [RequirerController::class, 'requirersCreate'])->name('blood.requirer.create');
 });
 
-// Admin only: manage status, delete, dashboard, pages, messages
 Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
