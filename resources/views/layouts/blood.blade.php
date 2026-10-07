@@ -9,15 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #241a1d;
-            --muted: #6b5c63;
-            --bg: #fff8f7;
+            --ink: #1f1418;
+            --muted: #5c4a52;
+            --bg: #efe4e6;
             --card: #ffffff;
-            --line: #f1dee0;
+            --line: #d4b8be;
             --primary: #b3122d;
             --primary-dark: #8c0e23;
             --blood: #b3122d;
-            --blood-soft: #fde8eb;
+            --blood-soft: #fce4e8;
             --accent: #d98c2b;
             --accent-ink: #2b1b07;
             --ok: #1a7f4e;
@@ -26,7 +26,7 @@
             --warn-soft: #fef3c7;
             --topbar: #ffffff;
             --font: "Manrope", system-ui, sans-serif;
-            --shadow: 0 1px 3px rgba(36, 26, 29, 0.07);
+            --shadow: 0 2px 8px rgba(36, 26, 29, 0.1);
         }
         * { box-sizing: border-box; margin: 0; }
         body {
@@ -44,6 +44,7 @@
             background: var(--topbar);
             color: var(--ink);
             border-bottom: 1px solid var(--line);
+            box-shadow: 0 1px 4px rgba(36, 26, 29, 0.06);
             position: sticky;
             top: 0;
             z-index: 40;
@@ -96,7 +97,7 @@
             font-family: inherit;
         }
         .nav a:hover, .nav button.linkish:hover { color: var(--ink); background: var(--bg); }
-        .nav a.active { color: var(--ink); font-weight: 700; }
+        .nav a.active { color: var(--blood); font-weight: 800; background: var(--blood-soft); }
         .nav .btn-admin {
             background: var(--blood) !important;
             color: #fff !important;
@@ -116,7 +117,7 @@
         .alert {
             background: var(--ok-soft);
             color: var(--ok);
-            border: 1px solid #bbf7d0;
+            border: 1px solid #86efac;
             padding: 0.55rem 0.85rem;
             border-radius: 8px;
             margin-bottom: 0.85rem;
@@ -154,7 +155,7 @@
         .btn-ghost {
             background: #fff;
             color: var(--ink);
-            box-shadow: inset 0 0 0 1px var(--line);
+            box-shadow: inset 0 0 0 1.5px var(--line);
         }
 
         .hero {
@@ -162,7 +163,7 @@
             color: #fff8f7;
             border-radius: 16px;
             padding: 1.5rem 1.35rem;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 14px rgba(179, 18, 45, 0.25);
         }
         .hero-kicker {
             font-size: 0.7rem;
@@ -193,7 +194,7 @@
         }
         .head-row .section-sub { margin-bottom: 0; }
 
-        .grid-3, .grid-2, .grid-5 { display: grid; gap: 0.6rem; }
+        .grid-3, .grid-2, .grid-5 { display: grid; gap: 0.75rem; }
         .grid-3 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr; }
         .grid-5 { grid-template-columns: repeat(2, 1fr); }
@@ -205,9 +206,9 @@
 
         .card {
             background: var(--card);
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 12px;
-            padding: 0.85rem 0.95rem;
+            padding: 0.9rem 1rem;
             box-shadow: var(--shadow);
         }
         .card h3 { font-size: 0.92rem; margin: 0 0 0.2rem; }
@@ -215,11 +216,11 @@
 
         .stat-card {
             background: var(--card);
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 12px;
-            padding: 0.75rem 0.85rem;
+            padding: 0.85rem 0.95rem;
             box-shadow: var(--shadow);
-            border-left: 3px solid var(--blood);
+            border-left: 4px solid var(--blood);
         }
         .stat-card.tone-ok { border-left-color: #1a7f4e; }
         .stat-card.tone-warn { border-left-color: var(--accent); }
@@ -235,6 +236,7 @@
             border-radius: 9px;
             background: var(--blood-soft);
             color: var(--blood);
+            border: 1px solid #f0b4bc;
             display: grid;
             place-items: center;
             font-weight: 800;
@@ -246,12 +248,13 @@
             display: flex;
             align-items: center;
             gap: 0.55rem;
-            padding: 0.65rem 0.75rem;
-            transition: border-color 0.12s, background 0.12s;
+            padding: 0.75rem 0.85rem;
+            transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
         }
         .quick-link:hover {
-            border-color: #f0b4bc;
+            border-color: #c45a6e;
             background: #fff5f6;
+            box-shadow: 0 4px 12px rgba(179, 18, 45, 0.12);
         }
         .quick-link strong { display: block; font-size: 0.88rem; }
         .quick-link span { display: block; color: var(--muted); font-size: 0.76rem; }
@@ -268,14 +271,14 @@
             gap: 0.35rem;
             padding: 0.45rem 0.75rem;
             background: var(--card);
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 8px;
             font-size: 0.82rem;
             font-weight: 700;
             box-shadow: var(--shadow);
         }
         .action-chip:hover {
-            border-color: #f0b4bc;
+            border-color: #c45a6e;
             background: #fff5f6;
             color: var(--blood);
         }
@@ -283,8 +286,9 @@
         .table-wrap {
             overflow-x: auto;
             border-radius: 12px;
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             background: var(--card);
+            box-shadow: var(--shadow);
         }
         table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
         th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); }
@@ -293,10 +297,10 @@
             font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            background: #fff1f2;
+            background: #f5e6e9;
             font-weight: 700;
         }
-        tbody tr:hover td { background: #fff8f7; }
+        tbody tr:hover td { background: #faf0f2; }
         tbody tr:last-child td { border-bottom: none; }
 
         .badge {
@@ -339,7 +343,7 @@
         .form-card {
             margin-top: 0.5rem;
             background: var(--card);
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 12px;
             padding: 1rem 1.05rem;
             box-shadow: var(--shadow);
@@ -351,7 +355,7 @@
             width: 100%;
             padding: 0.5rem 0.65rem;
             border-radius: 8px;
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             background: #fff;
             font-family: inherit;
             font-size: 0.88rem;
@@ -379,9 +383,9 @@
 
         .panel {
             background: var(--card);
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 12px;
-            padding: 0.75rem 0.85rem;
+            padding: 0.85rem 0.95rem;
             box-shadow: var(--shadow);
         }
         .panel h3 {
@@ -409,7 +413,7 @@
         }
         code {
             font-size: 0.8em;
-            background: #f1dee0;
+            background: #e8d0d5;
             padding: 0.1em 0.3em;
             border-radius: 4px;
         }
