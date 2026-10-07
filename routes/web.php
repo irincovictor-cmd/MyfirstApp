@@ -31,6 +31,8 @@ Route::post('/student-details', [StudentDetailController::class, 'store'])->name
 |--------------------------------------------------------------------------
 | BloodLink
 |--------------------------------------------------------------------------
+| Users: can submit donor / request forms only (no lists of other people).
+| Admins: full lists + approve / reject / delete.
 */
 Route::get('/blood', [BloodHomeController::class, 'index'])->name('blood.home');
 
@@ -63,23 +65,28 @@ Route::get('/blood/pages/{page}', [BloodPageController::class, 'show'])
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
 Route::post('/blood/contact', [ContactUsQueryController::class, 'store'])->name('blood.contact.store');
 
-// Logged-in users: donors only
+// Any logged-in user: submit forms only (no viewing other records)
 Route::middleware('blood.user')->group(function () {
-    Route::get('/blood/donors', [BloodDonorController::class, 'index'])->name('blood.donors');
     Route::get('/blood/donors/create', [BloodDonorController::class, 'create'])->name('blood.donor.create');
     Route::post('/blood/donors', [BloodDonorController::class, 'store'])->name('blood.donor.store');
+
+    Route::get('/blood/requests/create', [RequirerController::class, 'create'])->name('blood.request.create');
+    Route::post('/blood/requests', [RequirerController::class, 'store'])->name('blood.request.store');
 });
 
-// Admin only: requests + manage donors + dashboard
+// Admin only: see all records + manage status
 Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
     Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
 
-    // Blood requests — admin only (matches class middleware intent)
+    Route::get('/blood/donors', [BloodDonorController::class, 'index'])->name('blood.donors');
+    Route::post('/blood/donors/{donor}/status', [BloodDonorController::class, 'updateStatus'])
+        ->name('blood.donor.status');
+    Route::delete('/blood/donors/{donor}', [BloodDonorController::class, 'destroy'])
+        ->name('blood.donor.destroy');
+
     Route::get('/blood/requests', [RequirerController::class, 'index'])->name('blood.requests');
-    Route::get('/blood/requests/create', [RequirerController::class, 'create'])->name('blood.request.create');
-    Route::post('/blood/requests', [RequirerController::class, 'store'])->name('blood.request.store');
     Route::post('/blood/requests/{requirer}/status', [RequirerController::class, 'updateStatus'])
         ->name('blood.request.status');
     Route::delete('/blood/requests/{requirer}', [RequirerController::class, 'destroy'])
@@ -87,11 +94,6 @@ Route::middleware('blood.admin')->group(function () {
 
     Route::get('/blood/requirers', [RequirerController::class, 'requirersIndex'])->name('blood.requirers');
     Route::get('/blood/requirers/create', [RequirerController::class, 'requirersCreate'])->name('blood.requirer.create');
-
-    Route::post('/blood/donors/{donor}/status', [BloodDonorController::class, 'updateStatus'])
-        ->name('blood.donor.status');
-    Route::delete('/blood/donors/{donor}', [BloodDonorController::class, 'destroy'])
-        ->name('blood.donor.destroy');
 
     Route::get('/blood/contact-queries', [ContactUsQueryController::class, 'index'])->name('blood.contact-queries');
 
