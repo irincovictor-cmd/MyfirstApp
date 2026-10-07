@@ -21,7 +21,7 @@ Route::get('/work', fn () => view('portfolio', ['section' => 'work']))->name('wo
 Route::get('/about', fn () => view('portfolio', ['section' => 'about']))->name('about');
 Route::get('/contact', fn () => view('portfolio', ['section' => 'contact']))->name('contact');
 
-// Student forms (no separate admin panel)
+// Student forms
 Route::get('/student', [StudentController::class, 'create'])->name('student.create');
 Route::post('/student', [StudentController::class, 'store'])->name('student.store');
 Route::get('/student-details', [StudentDetailController::class, 'create'])->name('student-details.create');
@@ -29,7 +29,7 @@ Route::post('/student-details', [StudentDetailController::class, 'store'])->name
 
 /*
 |--------------------------------------------------------------------------
-| BloodLink — public + auth
+| BloodLink
 |--------------------------------------------------------------------------
 */
 Route::get('/blood', [BloodHomeController::class, 'index'])->name('blood.home');
@@ -44,18 +44,16 @@ Route::post('/blood/register', [BloodAuthController::class, 'register'])
     ->name('blood.register.submit');
 Route::post('/blood/logout', [BloodAuthController::class, 'logout'])->name('blood.logout');
 
-// Bootstrap first admin (only works when tbladmin is empty)
 Route::get('/blood/setup-admin', [BloodAdminController::class, 'setupForm'])->name('blood.setup');
 Route::post('/blood/setup-admin', [BloodAdminController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('blood.setup.submit');
 
-// Public read: pages list & contact form
 Route::get('/blood/pages', [BloodPageController::class, 'index'])->name('blood.pages');
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
 Route::post('/blood/contact', [ContactUsQueryController::class, 'store'])->name('blood.contact.store');
 
-// User power (logged-in user OR admin): donors & requests
+// User + admin: view/create donors & requests
 Route::middleware('blood.user')->group(function () {
     Route::get('/blood/donors', [BloodDonorController::class, 'index'])->name('blood.donors');
     Route::get('/blood/donors/create', [BloodDonorController::class, 'create'])->name('blood.donor.create');
@@ -69,11 +67,21 @@ Route::middleware('blood.user')->group(function () {
     Route::get('/blood/requirers/create', [RequirerController::class, 'requirersCreate'])->name('blood.requirer.create');
 });
 
-// Admin power only (BloodLink)
+// Admin only: manage status, delete, dashboard, pages, messages
 Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
     Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
+
+    Route::post('/blood/donors/{donor}/status', [BloodDonorController::class, 'updateStatus'])
+        ->name('blood.donor.status');
+    Route::delete('/blood/donors/{donor}', [BloodDonorController::class, 'destroy'])
+        ->name('blood.donor.destroy');
+
+    Route::post('/blood/requests/{requirer}/status', [RequirerController::class, 'updateStatus'])
+        ->name('blood.request.status');
+    Route::delete('/blood/requests/{requirer}', [RequirerController::class, 'destroy'])
+        ->name('blood.request.destroy');
 
     Route::get('/blood/pages/create', [BloodPageController::class, 'create'])->name('blood.page.create');
     Route::post('/blood/pages', [BloodPageController::class, 'store'])->name('blood.page.store');
