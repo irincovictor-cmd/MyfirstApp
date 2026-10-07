@@ -2,6 +2,8 @@
 @section('title', 'Donors')
 @section('content')
 
+@php $isAdmin = auth()->check() && auth()->user()->isAdmin(); @endphp
+
 <div class="head-row">
     <div>
         <h1 class="section-title">🩸 Donors</h1>
@@ -48,6 +50,9 @@
                     <th>Gender</th>
                     <th>Status</th>
                     <th>Address</th>
+                    @if($isAdmin)
+                        <th>Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +68,38 @@
                             </span>
                         </td>
                         <td>{{ $d->address ?? '—' }}</td>
+                        @if($isAdmin)
+                            <td>
+                                <div style="display:flex;flex-wrap:wrap;gap:0.25rem;">
+                                    @if(($d->status ?? '') !== 'approved')
+                                        <form method="POST" action="{{ route('blood.donor.status', $d) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="approved">
+                                            <button type="submit" class="btn btn-primary" style="padding:0.25rem 0.45rem;font-size:0.72rem;">✓ Approve</button>
+                                        </form>
+                                    @endif
+                                    @if(($d->status ?? '') !== 'rejected')
+                                        <form method="POST" action="{{ route('blood.donor.status', $d) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="rejected">
+                                            <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;">✗ Reject</button>
+                                        </form>
+                                    @endif
+                                    @if(($d->status ?? '') !== 'pending')
+                                        <form method="POST" action="{{ route('blood.donor.status', $d) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="pending">
+                                            <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;">↺ Pending</button>
+                                        </form>
+                                    @endif
+                                    <form method="POST" action="{{ route('blood.donor.destroy', $d) }}" onsubmit="return confirm('Delete this donor?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;color:#9f1239;">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
