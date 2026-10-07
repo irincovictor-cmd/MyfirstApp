@@ -430,12 +430,15 @@
             <li><a href="{{ route('blood.home') }}" class="{{ request()->routeIs('blood.home') ? 'active' : '' }}">Home</a></li>
             @auth
                 <li><a href="{{ route('blood.donors') }}" class="{{ request()->routeIs('blood.donors*') ? 'active' : '' }}">Donors</a></li>
-                <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests*') ? 'active' : '' }}">Requests</a></li>
+                {{-- Requests: admin only --}}
+                @if(auth()->user()->isAdmin())
+                    <li><a href="{{ route('blood.requests') }}" class="{{ request()->routeIs('blood.requests*') ? 'active' : '' }}">Requests</a></li>
+                @endif
             @endauth
             <li><a href="{{ route('blood.contact') }}" class="{{ request()->routeIs('blood.contact') ? 'active' : '' }}">Contact</a></li>
             <li><a href="{{ route('blood.pages') }}" class="{{ request()->routeIs('blood.pages*') ? 'active' : '' }}">Pages</a></li>
             @auth
-                @if(auth()->user()->role === 'admin')
+                @if(auth()->user()->isAdmin())
                     <li><a class="btn-admin" href="{{ route('blood.admin.dashboard') }}">Admin</a></li>
                 @endif
                 <li><span class="who">{{ auth()->user()->isAdmin() ? 'Admin' : 'User' }}: {{ auth()->user()->name }}</span></li>
