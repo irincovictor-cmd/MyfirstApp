@@ -48,10 +48,16 @@ class BloodDonorController extends Controller
 
         BloodDonor::create($data);
 
-        return redirect()->route('blood.donors')->with('success', 'Donor registered.');
+        // Users cannot view the full list — send them home
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            return redirect()->route('blood.donors')
+                ->with('success', 'Donor registered.');
+        }
+
+        return redirect()->route('blood.home')
+            ->with('success', 'Thank you! Your donor registration was submitted and is pending admin review.');
     }
 
-    /** Admin: set status (pending / approved / rejected). */
     public function updateStatus(Request $request, BloodDonor $donor)
     {
         $data = $request->validate([
@@ -63,7 +69,6 @@ class BloodDonorController extends Controller
         return back()->with('success', 'Donor marked '.$data['status'].'.');
     }
 
-    /** Admin: remove donor. */
     public function destroy(BloodDonor $donor)
     {
         $name = trim($donor->first_name.' '.$donor->last_name);
