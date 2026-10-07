@@ -5,7 +5,7 @@
 <div class="head-row">
     <div>
         <h1 class="section-title">📄 Pages</h1>
-        <p class="section-sub">Info content</p>
+        <p class="section-sub">Guides and FAQ</p>
     </div>
     @auth
         @if(auth()->user()->isAdmin())
@@ -18,21 +18,18 @@
     <div class="card empty">
         <div class="empty-icon">📄</div>
         <h3>No pages</h3>
-        <p>Add FAQ or about.</p>
-        @auth
-            @if(auth()->user()->isAdmin())
-                <a class="btn btn-primary" href="{{ route('blood.page.create') }}">+ Page</a>
-            @endif
-        @endauth
+        <p>Refresh once — starter pages load automatically.</p>
     </div>
 @else
-    <div class="grid-3">
+    <div class="grid-2">
         @foreach($pages as $page)
-            <article class="card">
-                <h3>{{ $page->page_title }}</h3>
-                <p style="margin:0 0 0.35rem;"><code>{{ $page->page_slug }}</code></p>
-                <p>{{ \Illuminate\Support\Str::limit($page->page_content, 100) }}</p>
-            </article>
+            <a class="card quick-link" href="{{ route('blood.page.show', $page) }}">
+                <div class="feature-icon">📄</div>
+                <div>
+                    <strong>{{ $page->page_title }}</strong>
+                    <span>{{ \Illuminate\Support\Str::limit(strip_tags($page->page_content), 90) }}</span>
+                </div>
+            </a>
         @endforeach
     </div>
 @endif
