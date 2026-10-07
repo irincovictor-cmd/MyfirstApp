@@ -6,15 +6,13 @@
     <div class="hero-kicker">Blood donation system</div>
     <h1>Give blood. Save lives.</h1>
     <p>
-        BloodLink helps people register as donors.
-        Staff manage blood requests and review records in one place.
+        Register as a donor or submit a blood request.
+        Personal records stay private — only staff can view the full lists.
     </p>
     <div class="hero-actions">
         @auth
             <a class="btn btn-amber" href="{{ route('blood.donor.create') }}">🩸 Donate</a>
-            @if(auth()->user()->isAdmin())
-                <a class="btn btn-outline" href="{{ route('blood.request.create') }}">📋 Request</a>
-            @endif
+            <a class="btn btn-outline" href="{{ route('blood.request.create') }}">📋 Request</a>
         @else
             <a class="btn btn-amber" href="{{ route('blood.register') }}">Create account</a>
             <a class="btn btn-outline" href="{{ route('blood.login') }}">Login</a>
@@ -25,8 +23,8 @@
 <div class="panel" style="margin-top:1rem;">
     <h3 style="text-transform:none;letter-spacing:0;font-size:1rem;color:var(--ink);">What is BloodLink?</h3>
     <p style="margin:0.4rem 0 0;color:var(--muted);font-size:0.9rem;line-height:1.55;">
-        This is a simple blood bank web app. Users can sign up and register as donors.
-        Admins manage blood requests, approve or reject records, and read contact messages.
+        Users can submit donor or blood-request forms. They cannot see other people's data.
+        Admins review submissions, approve or reject them, and manage contact messages.
     </p>
 </div>
 
@@ -46,7 +44,7 @@
 </div>
 
 <h2 class="section-title" style="margin-top:1.35rem;">How it works</h2>
-<p class="section-sub">Three steps from signup to match.</p>
+<p class="section-sub">Three steps from signup to review.</p>
 <div class="grid-3">
     <div class="card feature">
         <div class="feature-icon">1</div>
@@ -58,15 +56,15 @@
     <div class="card feature">
         <div class="feature-icon">2</div>
         <div>
-            <strong style="display:block;font-size:0.92rem;">Register as donor</strong>
-            <span style="color:var(--muted);font-size:0.82rem;">Fill a short form with blood type and details.</span>
+            <strong style="display:block;font-size:0.92rem;">Donate or request</strong>
+            <span style="color:var(--muted);font-size:0.82rem;">Submit your own form only — no public lists.</span>
         </div>
     </div>
     <div class="card feature">
         <div class="feature-icon">3</div>
         <div>
             <strong style="display:block;font-size:0.92rem;">Admin reviews</strong>
-            <span style="color:var(--muted);font-size:0.82rem;">Staff manage requests and approve donors.</span>
+            <span style="color:var(--muted);font-size:0.82rem;">Staff see all records and update status.</span>
         </div>
     </div>
 </div>
@@ -78,7 +76,7 @@
         <div>
             <strong style="display:block;font-size:0.92rem;">Users</strong>
             <span style="color:var(--muted);font-size:0.82rem;">
-                Register as a donor and view the donor list after login.
+                Submit a donor form or blood request. Cannot browse other people's info.
             </span>
         </div>
     </div>
@@ -87,7 +85,7 @@
         <div>
             <strong style="display:block;font-size:0.92rem;">Admins</strong>
             <span style="color:var(--muted);font-size:0.82rem;">
-                Manage blood requests, approve or reject donors, and read contact messages.
+                View full donor and request lists, approve or reject, and read messages.
             </span>
         </div>
     </div>
@@ -98,7 +96,7 @@
     <h3 style="text-transform:none;letter-spacing:0;font-size:0.95rem;color:var(--ink);">New here?</h3>
     <p style="margin:0.35rem 0 0.65rem;color:var(--muted);font-size:0.88rem;">
         You can read info pages and send a message without an account.
-        To register as a donor, create an account first.
+        To donate or request blood, create an account first.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
         <a class="btn btn-primary" href="{{ route('blood.register') }}">Create account</a>
@@ -112,19 +110,33 @@
 <p class="section-sub">Jump to a page.</p>
 <div class="grid-2">
     @auth
-        <a class="card quick-link" href="{{ route('blood.donors') }}">
+        <a class="card quick-link" href="{{ route('blood.donor.create') }}">
             <div class="feature-icon">🩸</div>
             <div>
-                <strong>Donors</strong>
-                <span>Browse list</span>
+                <strong>Donate</strong>
+                <span>Submit donor form</span>
+            </div>
+        </a>
+        <a class="card quick-link" href="{{ route('blood.request.create') }}">
+            <div class="feature-icon">📋</div>
+            <div>
+                <strong>Request</strong>
+                <span>Submit blood request</span>
             </div>
         </a>
         @if(auth()->user()->isAdmin())
+            <a class="card quick-link" href="{{ route('blood.donors') }}">
+                <div class="feature-icon">👀</div>
+                <div>
+                    <strong>All donors</strong>
+                    <span>Admin list</span>
+                </div>
+            </a>
             <a class="card quick-link" href="{{ route('blood.requests') }}">
                 <div class="feature-icon">📋</div>
                 <div>
-                    <strong>Requests</strong>
-                    <span>Admin only</span>
+                    <strong>All requests</strong>
+                    <span>Admin list</span>
                 </div>
             </a>
         @endif
@@ -143,17 +155,6 @@
             <span>Info & FAQs</span>
         </div>
     </a>
-    @auth
-        @if(auth()->user()->isAdmin())
-            <a class="card quick-link" href="{{ route('blood.admin.dashboard') }}">
-                <div class="feature-icon">⚙️</div>
-                <div>
-                    <strong>Admin</strong>
-                    <span>Dashboard</span>
-                </div>
-            </a>
-        @endif
-    @endauth
 </div>
 
 @endsection
