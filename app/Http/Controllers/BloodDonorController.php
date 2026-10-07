@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\BloodDonor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class BloodDonorController extends Controller
@@ -47,7 +48,28 @@ class BloodDonorController extends Controller
 
         BloodDonor::create($data);
 
-        return redirect()->route('blood.donors')->with('success', 'Donor registered successfully.');
+        return redirect()->route('blood.donors')->with('success', 'Donor registered.');
+    }
+
+    /** Admin: set status (pending / approved / rejected). */
+    public function updateStatus(Request $request, BloodDonor $donor)
+    {
+        $data = $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $donor->update(['status' => $data['status']]);
+
+        return back()->with('success', 'Donor marked '.$data['status'].'.');
+    }
+
+    /** Admin: remove donor. */
+    public function destroy(BloodDonor $donor)
+    {
+        $name = trim($donor->first_name.' '.$donor->last_name);
+        $donor->delete();
+
+        return back()->with('success', 'Donor removed: '.$name);
     }
 
     private function defaultAdminId(): int
