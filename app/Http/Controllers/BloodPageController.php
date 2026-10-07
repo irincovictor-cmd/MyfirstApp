@@ -46,13 +46,12 @@ class BloodPageController extends Controller
         return redirect()->route('blood.pages')->with('success', 'Page created.');
     }
 
-    /** First visit: create useful starter pages if table is empty. */
+    /**
+     * Ensure starter guides exist (by slug).
+     * Works even if other test pages already exist in the table.
+     */
     private function ensureDefaultPages(): void
     {
-        if (Page::query()->exists()) {
-            return;
-        }
-
         $adminId = $this->defaultAdminId();
 
         $defaults = [
@@ -102,12 +101,14 @@ class BloodPageController extends Controller
         ];
 
         foreach ($defaults as $row) {
-            Page::create([
-                'admin_id' => $adminId,
-                'page_title' => $row['page_title'],
-                'page_slug' => $row['page_slug'],
-                'page_content' => $row['page_content'],
-            ]);
+            Page::firstOrCreate(
+                ['page_slug' => $row['page_slug']],
+                [
+                    'admin_id' => $adminId,
+                    'page_title' => $row['page_title'],
+                    'page_content' => $row['page_content'],
+                ]
+            );
         }
     }
 
