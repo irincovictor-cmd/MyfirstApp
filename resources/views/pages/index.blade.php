@@ -5,7 +5,7 @@
 <div class="head-row">
     <div>
         <h1 class="section-title">📄 Pages</h1>
-        <p class="section-sub">Guides and FAQ</p>
+        <p class="section-sub">Guides and FAQ — click a card to read</p>
     </div>
     @auth
         @if(auth()->user()->isAdmin())
@@ -23,11 +23,11 @@
 @else
     <div class="grid-2">
         @foreach($pages as $page)
-            <a class="card quick-link" href="{{ route('blood.page.show', $page) }}">
+            <a class="card quick-link" href="{{ route('blood.page.show', $page) }}" style="min-height:4.5rem;">
                 <div class="feature-icon">📄</div>
-                <div>
+                <div style="flex:1;">
                     <strong>{{ $page->page_title }}</strong>
-                    <span>{{ \Illuminate\Support\Str::limit(strip_tags($page->page_content), 90) }}</span>
+                    <span>{{ \Illuminate\Support\Str::limit(strip_tags($page->page_content), 110) }}</span>
                 </div>
             </a>
         @endforeach
