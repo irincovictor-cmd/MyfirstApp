@@ -31,8 +31,6 @@ Route::post('/student-details', [StudentDetailController::class, 'store'])->name
 |--------------------------------------------------------------------------
 | BloodLink
 |--------------------------------------------------------------------------
-| Users: can submit donor / request forms only (no lists of other people).
-| Admins: full lists + approve / reject / delete.
 */
 Route::get('/blood', [BloodHomeController::class, 'index'])->name('blood.home');
 
@@ -65,7 +63,6 @@ Route::get('/blood/pages/{page}', [BloodPageController::class, 'show'])
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
 Route::post('/blood/contact', [ContactUsQueryController::class, 'store'])->name('blood.contact.store');
 
-// Any logged-in user: submit forms only (no viewing other records)
 Route::middleware('blood.user')->group(function () {
     Route::get('/blood/donors/create', [BloodDonorController::class, 'create'])->name('blood.donor.create');
     Route::post('/blood/donors', [BloodDonorController::class, 'store'])->name('blood.donor.store');
@@ -74,11 +71,19 @@ Route::middleware('blood.user')->group(function () {
     Route::post('/blood/requests', [RequirerController::class, 'store'])->name('blood.request.store');
 });
 
-// Admin only: see all records + manage status
 Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin', [BloodAdminController::class, 'dashboard'])->name('blood.admin.dashboard');
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
     Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
+
+    // Manage login accounts
+    Route::get('/blood/admin/users', [BloodAdminController::class, 'users'])->name('blood.admin.users');
+    Route::post('/blood/admin/users/{user}/password', [BloodAdminController::class, 'updatePassword'])
+        ->name('blood.admin.user.password');
+    Route::post('/blood/admin/users/{user}/role', [BloodAdminController::class, 'updateRole'])
+        ->name('blood.admin.user.role');
+    Route::delete('/blood/admin/users/{user}', [BloodAdminController::class, 'destroyUser'])
+        ->name('blood.admin.user.destroy');
 
     Route::get('/blood/donors', [BloodDonorController::class, 'index'])->name('blood.donors');
     Route::post('/blood/donors/{donor}/status', [BloodDonorController::class, 'updateStatus'])
