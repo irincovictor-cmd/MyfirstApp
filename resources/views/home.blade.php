@@ -11,16 +11,15 @@
     </p>
     <div class="hero-actions">
         @auth
-            <a class="btn btn-light" href="{{ route('blood.donor.create') }}">🩸 Donate</a>
+            <a class="btn btn-amber" href="{{ route('blood.donor.create') }}">🩸 Donate</a>
             <a class="btn btn-outline" href="{{ route('blood.request.create') }}">📋 Request</a>
         @else
-            <a class="btn btn-light" href="{{ route('blood.register') }}">Create account</a>
+            <a class="btn btn-amber" href="{{ route('blood.register') }}">Create account</a>
             <a class="btn btn-outline" href="{{ route('blood.login') }}">Login</a>
         @endauth
     </div>
 </div>
 
-{{-- What is this site --}}
 <div class="panel" style="margin-top:1rem;">
     <h3 style="text-transform:none;letter-spacing:0;font-size:1rem;color:var(--ink);">What is BloodLink?</h3>
     <p style="margin:0.4rem 0 0;color:var(--muted);font-size:0.9rem;line-height:1.55;">
@@ -29,7 +28,6 @@
     </p>
 </div>
 
-{{-- Stats --}}
 <div class="grid-3" style="margin-top:0.85rem;">
     <div class="stat-card">
         <div class="stat">{{ $donorCount ?? 0 }}</div>
@@ -45,7 +43,6 @@
     </div>
 </div>
 
-{{-- How it works --}}
 <h2 class="section-title" style="margin-top:1.35rem;">How it works</h2>
 <p class="section-sub">Three steps from signup to match.</p>
 <div class="grid-3">
@@ -72,7 +69,6 @@
     </div>
 </div>
 
-{{-- Who can use it --}}
 <h2 class="section-title" style="margin-top:1.35rem;">Who is it for?</h2>
 <div class="grid-2">
     <div class="card feature">
@@ -95,7 +91,6 @@
     </div>
 </div>
 
-{{-- Guest tip --}}
 @guest
 <div class="panel" style="margin-top:1rem;border-left:3px solid var(--blood);">
     <h3 style="text-transform:none;letter-spacing:0;font-size:0.95rem;color:var(--ink);">New here?</h3>
@@ -111,7 +106,6 @@
 </div>
 @endguest
 
-{{-- Quick links --}}
 <h2 class="section-title" style="margin-top:1.35rem;">Quick links</h2>
 <p class="section-sub">Jump to a page.</p>
 <div class="grid-2">
