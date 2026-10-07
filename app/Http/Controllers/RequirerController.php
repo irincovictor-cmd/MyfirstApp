@@ -15,7 +15,6 @@ class RequirerController extends Controller
 
         $requirers = Requirer::query()
             ->when($bloodType, fn ($q) => $q->where('blood_type', $bloodType))
-            // Soonest-needed requests first; requests with no date go last.
             ->orderByRaw('required_date IS NULL, required_date ASC')
             ->orderByDesc('id')
             ->paginate(10)
@@ -27,7 +26,6 @@ class RequirerController extends Controller
         ]);
     }
 
-    /** Assignment folder: requirers/ */
     public function requirersIndex()
     {
         $requirers = Requirer::orderByDesc('id')->get();
@@ -64,6 +62,27 @@ class RequirerController extends Controller
         Requirer::create($data);
 
         return redirect()->route('blood.requests')->with('success', 'Blood request submitted.');
+    }
+
+    /** Admin: set status (pending / approved / fulfilled / rejected). */
+    public function updateStatus(Request $request, Requirer $requirer)
+    {
+        $data = $request->validate([
+            'status' => 'required|in:pending,approved,fulfilled,rejected',
+        ]);
+
+        $requirer->update(['status' => $data['status']]);
+
+        return back()->with('success', 'Request marked '.$data['status'].'.');
+    }
+
+    /** Admin: remove request. */
+    public function destroy(Requirer $requirer)
+    {
+        $name = trim($requirer->first_name.' '.$requirer->last_name);
+        $requirer->delete();
+
+        return back()->with('success', 'Request removed: '.$name);
     }
 
     private function defaultAdminId(): int
