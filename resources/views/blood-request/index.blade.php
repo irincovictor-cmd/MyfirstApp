@@ -2,6 +2,8 @@
 @section('title', 'Requests')
 @section('content')
 
+@php $isAdmin = auth()->check() && auth()->user()->isAdmin(); @endphp
+
 <div class="head-row">
     <div>
         <h1 class="section-title">📋 Requests</h1>
@@ -49,6 +51,9 @@
                     <th>Hospital</th>
                     <th>Needed</th>
                     <th>Status</th>
+                    @if($isAdmin)
+                        <th>Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -76,6 +81,38 @@
                                 {{ $r->status ?? 'pending' }}
                             </span>
                         </td>
+                        @if($isAdmin)
+                            <td>
+                                <div style="display:flex;flex-wrap:wrap;gap:0.25rem;">
+                                    @if(($r->status ?? '') !== 'approved')
+                                        <form method="POST" action="{{ route('blood.request.status', $r) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="approved">
+                                            <button type="submit" class="btn btn-primary" style="padding:0.25rem 0.45rem;font-size:0.72rem;">✓ Approve</button>
+                                        </form>
+                                    @endif
+                                    @if(($r->status ?? '') !== 'fulfilled')
+                                        <form method="POST" action="{{ route('blood.request.status', $r) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="fulfilled">
+                                            <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;">✓ Fulfilled</button>
+                                        </form>
+                                    @endif
+                                    @if(($r->status ?? '') !== 'rejected')
+                                        <form method="POST" action="{{ route('blood.request.status', $r) }}">
+                                            @csrf
+                                            <input type="hidden" name="status" value="rejected">
+                                            <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;">✗ Reject</button>
+                                        </form>
+                                    @endif
+                                    <form method="POST" action="{{ route('blood.request.destroy', $r) }}" onsubmit="return confirm('Delete this request?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-ghost" style="padding:0.25rem 0.45rem;font-size:0.72rem;color:#9f1239;">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
