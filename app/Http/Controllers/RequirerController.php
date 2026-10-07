@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Requirer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RequirerController extends Controller
@@ -61,10 +62,15 @@ class RequirerController extends Controller
 
         Requirer::create($data);
 
-        return redirect()->route('blood.requests')->with('success', 'Blood request submitted.');
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            return redirect()->route('blood.requests')
+                ->with('success', 'Blood request submitted.');
+        }
+
+        return redirect()->route('blood.home')
+            ->with('success', 'Thank you! Your blood request was submitted and is pending admin review.');
     }
 
-    /** Admin: set status (pending / approved / fulfilled / rejected). */
     public function updateStatus(Request $request, Requirer $requirer)
     {
         $data = $request->validate([
@@ -76,7 +82,6 @@ class RequirerController extends Controller
         return back()->with('success', 'Request marked '.$data['status'].'.');
     }
 
-    /** Admin: remove request. */
     public function destroy(Requirer $requirer)
     {
         $name = trim($requirer->first_name.' '.$requirer->last_name);
