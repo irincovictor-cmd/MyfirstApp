@@ -6,13 +6,15 @@
     <div class="hero-kicker">Blood donation system</div>
     <h1>Give blood. Save lives.</h1>
     <p>
-        BloodLink helps people register as donors, request blood for patients,
-        and lets staff review and match records in one place.
+        BloodLink helps people register as donors.
+        Staff manage blood requests and review records in one place.
     </p>
     <div class="hero-actions">
         @auth
             <a class="btn btn-amber" href="{{ route('blood.donor.create') }}">🩸 Donate</a>
-            <a class="btn btn-outline" href="{{ route('blood.request.create') }}">📋 Request</a>
+            @if(auth()->user()->isAdmin())
+                <a class="btn btn-outline" href="{{ route('blood.request.create') }}">📋 Request</a>
+            @endif
         @else
             <a class="btn btn-amber" href="{{ route('blood.register') }}">Create account</a>
             <a class="btn btn-outline" href="{{ route('blood.login') }}">Login</a>
@@ -23,8 +25,8 @@
 <div class="panel" style="margin-top:1rem;">
     <h3 style="text-transform:none;letter-spacing:0;font-size:1rem;color:var(--ink);">What is BloodLink?</h3>
     <p style="margin:0.4rem 0 0;color:var(--muted);font-size:0.9rem;line-height:1.55;">
-        This is a simple blood bank web app. Users can sign up, register as donors, or submit a blood request.
-        Admins can approve or reject records, track status, and manage messages from the contact form.
+        This is a simple blood bank web app. Users can sign up and register as donors.
+        Admins manage blood requests, approve or reject records, and read contact messages.
     </p>
 </div>
 
@@ -56,7 +58,7 @@
     <div class="card feature">
         <div class="feature-icon">2</div>
         <div>
-            <strong style="display:block;font-size:0.92rem;">Donate or request</strong>
+            <strong style="display:block;font-size:0.92rem;">Register as donor</strong>
             <span style="color:var(--muted);font-size:0.82rem;">Fill a short form with blood type and details.</span>
         </div>
     </div>
@@ -64,7 +66,7 @@
         <div class="feature-icon">3</div>
         <div>
             <strong style="display:block;font-size:0.92rem;">Admin reviews</strong>
-            <span style="color:var(--muted);font-size:0.82rem;">Staff approve, reject, or mark requests fulfilled.</span>
+            <span style="color:var(--muted);font-size:0.82rem;">Staff manage requests and approve donors.</span>
         </div>
     </div>
 </div>
@@ -76,7 +78,7 @@
         <div>
             <strong style="display:block;font-size:0.92rem;">Users</strong>
             <span style="color:var(--muted);font-size:0.82rem;">
-                Register as a donor or submit a blood request. View donor and request lists after login.
+                Register as a donor and view the donor list after login.
             </span>
         </div>
     </div>
@@ -85,7 +87,7 @@
         <div>
             <strong style="display:block;font-size:0.92rem;">Admins</strong>
             <span style="color:var(--muted);font-size:0.82rem;">
-                Approve or reject donors and requests, manage pages, and read contact messages.
+                Manage blood requests, approve or reject donors, and read contact messages.
             </span>
         </div>
     </div>
@@ -96,7 +98,7 @@
     <h3 style="text-transform:none;letter-spacing:0;font-size:0.95rem;color:var(--ink);">New here?</h3>
     <p style="margin:0.35rem 0 0.65rem;color:var(--muted);font-size:0.88rem;">
         You can read info pages and send a message without an account.
-        To register as a donor or request blood, create an account first.
+        To register as a donor, create an account first.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
         <a class="btn btn-primary" href="{{ route('blood.register') }}">Create account</a>
@@ -117,13 +119,15 @@
                 <span>Browse list</span>
             </div>
         </a>
-        <a class="card quick-link" href="{{ route('blood.requests') }}">
-            <div class="feature-icon">📋</div>
-            <div>
-                <strong>Requests</strong>
-                <span>Open needs</span>
-            </div>
-        </a>
+        @if(auth()->user()->isAdmin())
+            <a class="card quick-link" href="{{ route('blood.requests') }}">
+                <div class="feature-icon">📋</div>
+                <div>
+                    <strong>Requests</strong>
+                    <span>Admin only</span>
+                </div>
+            </a>
+        @endif
     @endauth
     <a class="card quick-link" href="{{ route('blood.contact') }}">
         <div class="feature-icon">✉️</div>
