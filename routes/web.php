@@ -49,8 +49,17 @@ Route::post('/blood/setup-admin', [BloodAdminController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('blood.setup.submit');
 
+// Pages: list + create before {page} so "create" is not treated as an id
 Route::get('/blood/pages', [BloodPageController::class, 'index'])->name('blood.pages');
-Route::get('/blood/pages/{page}', [BloodPageController::class, 'show'])->name('blood.page.show');
+Route::get('/blood/pages/create', [BloodPageController::class, 'create'])
+    ->middleware('blood.admin')
+    ->name('blood.page.create');
+Route::post('/blood/pages', [BloodPageController::class, 'store'])
+    ->middleware('blood.admin')
+    ->name('blood.page.store');
+Route::get('/blood/pages/{page}', [BloodPageController::class, 'show'])
+    ->whereNumber('page')
+    ->name('blood.page.show');
 
 Route::get('/blood/contact', [ContactUsQueryController::class, 'create'])->name('blood.contact');
 Route::post('/blood/contact', [ContactUsQueryController::class, 'store'])->name('blood.contact.store');
@@ -82,9 +91,6 @@ Route::middleware('blood.admin')->group(function () {
         ->name('blood.request.status');
     Route::delete('/blood/requests/{requirer}', [RequirerController::class, 'destroy'])
         ->name('blood.request.destroy');
-
-    Route::get('/blood/pages/create', [BloodPageController::class, 'create'])->name('blood.page.create');
-    Route::post('/blood/pages', [BloodPageController::class, 'store'])->name('blood.page.store');
 
     Route::get('/blood/contact-queries', [ContactUsQueryController::class, 'index'])->name('blood.contact-queries');
 
