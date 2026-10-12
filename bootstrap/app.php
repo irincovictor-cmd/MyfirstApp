@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureBloodAdmin;
 use App\Http\Middleware\EnsureBloodUser;
+use App\Http\Middleware\EnsureExamRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'blood.user' => EnsureBloodUser::class,
             'blood.admin' => EnsureBloodAdmin::class,
+            'exam.role' => EnsureExamRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
