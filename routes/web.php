@@ -9,6 +9,8 @@ use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\ContactUsQueryController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RequirerController;
+use App\Http\Controllers\StaffAuthController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDetailController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,40 @@ Route::get('/student', [StudentController::class, 'create'])->name('student.crea
 Route::post('/student', [StudentController::class, 'store'])->name('student.store');
 Route::get('/student-details', [StudentDetailController::class, 'create'])->name('student-details.create');
 Route::post('/student-details', [StudentDetailController::class, 'store'])->name('student-details.store');
+
+/*
+|--------------------------------------------------------------------------
+| Staff hierarchy exam (Supervisor > Manager > Employee)
+| Uses users.role — same table as BloodLink
+|--------------------------------------------------------------------------
+*/
+Route::get('/staff/login', [StaffAuthController::class, 'showLogin'])->name('staff.login');
+Route::post('/staff/login', [StaffAuthController::class, 'login'])
+    ->middleware('throttle:8,1')
+    ->name('staff.login.submit');
+Route::post('/staff/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
+
+// Employee dashboard — all three roles may view (whiteboard)
+Route::get('/staff/employee', [StaffController::class, 'employee'])
+    ->middleware('exam.role:employee,manager,supervisor')
+    ->name('staff.employee');
+
+// Manager dashboard — manager only (supervisor cannot access)
+Route::get('/staff/manager', [StaffController::class, 'manager'])
+    ->middleware('exam.role:manager')
+    ->name('staff.manager');
+
+// Supervisor dashboard — manager + supervisor
+Route::get('/staff/supervisor', [StaffController::class, 'supervisor'])
+    ->middleware('exam.role:manager,supervisor')
+    ->name('staff.supervisor');
+
+// Manager CRUD on employees
+Route::middleware('exam.role:manager')->group(function () {
+    Route::post('/staff/employees', [StaffController::class, 'storeEmployee'])->name('staff.employee.store');
+    Route::put('/staff/employees/{user}', [StaffController::class, 'updateEmployee'])->name('staff.employee.update');
+    Route::delete('/staff/employees/{user}', [StaffController::class, 'destroyEmployee'])->name('staff.employee.destroy');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +112,6 @@ Route::middleware('blood.admin')->group(function () {
     Route::get('/blood/admin/register', [BloodAdminController::class, 'create'])->name('blood.admin.create');
     Route::post('/blood/admin/register', [BloodAdminController::class, 'store'])->name('blood.admin.store');
 
-    // Manage login accounts
     Route::get('/blood/admin/users', [BloodAdminController::class, 'users'])->name('blood.admin.users');
     Route::post('/blood/admin/users/{user}/password', [BloodAdminController::class, 'updatePassword'])
         ->name('blood.admin.user.password');
