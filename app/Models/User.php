@@ -28,4 +28,25 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function isEmployee(): bool
+    {
+        return $this->role === 'employee';
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
+    public function isSupervisor(): bool
+    {
+        return $this->role === 'supervisor';
+    }
+
+    /** Staff hierarchy roles used in exam demo. */
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['employee', 'manager', 'supervisor'], true);
+    }
 }
